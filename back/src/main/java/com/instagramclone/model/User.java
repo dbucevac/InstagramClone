@@ -51,14 +51,14 @@ public class User {
 	private List<Like> likes = new ArrayList<>();
 	
 	@ManyToMany
-	@JoinTable(name="tbl_followers",
+	@JoinTable(name="followers",
 	 joinColumns=@JoinColumn(name="userId"),
 	 inverseJoinColumns=@JoinColumn(name="followerId")
 	)
 	private List<User> followers = new ArrayList<>();
 
 	@ManyToMany
-	@JoinTable(name="tbl_followers",
+	@JoinTable(name="followers",
 	 joinColumns=@JoinColumn(name="followerId"),
 	 inverseJoinColumns=@JoinColumn(name="userId")
 	)
