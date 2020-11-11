@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
-Built-By: Darko
-Build-Jdk: 11.0.7
+Build-Jdk-Spec: 11
+Implementation-Title: InstagramClone
+Implementation-Version: 0.0.1-SNAPSHOT
 Created-By: Maven Integration for Eclipse
 
