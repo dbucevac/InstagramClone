@@ -23,6 +23,8 @@ public class Picture {
 	@OneToOne(mappedBy = "picture")
 	private User user;
 	
+	@OneToOne(mappedBy = "picture")
+	private Post post;
 	
 	public Picture() {
 		
@@ -73,5 +75,15 @@ public class Picture {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	
+	
 
 }
