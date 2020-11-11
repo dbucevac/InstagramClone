@@ -86,7 +86,7 @@ public class JpaUserService implements UserService{
 	@Override
 	public List<User> findFollowersByUserId(Long userId) {
 		// TODO Auto-generated method stub
-		return userRepository.findFollowersByUserId(userId);
+		return userRepository.findByFollowerOfId(userId);
 	}
 	
 	
