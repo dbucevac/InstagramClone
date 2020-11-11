@@ -11,6 +11,6 @@ import com.instagramclone.model.Picture;
 public interface PictureRepository extends JpaRepository<Picture, Long> {
 	
 	Optional<Picture> findByUserId(Long userId);
-	Optional<Picture> findByPostd(Long postId);
+	Optional<Picture> findByPostId(Long postId);
 
 }

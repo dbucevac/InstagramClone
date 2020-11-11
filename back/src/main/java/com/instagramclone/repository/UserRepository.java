@@ -19,7 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "(:username IS NULL or u.username like :username )")
 	List<User> searchUsers(@Param("username") String username);
 	
-	@Query("SELECT u FROM User u LEFT JOIN u.followers f WHERE f.userId = :userId")
+	@Query("SELECT u FROM User u LEFT JOIN u.followers f WHERE u.id = :userId")
 	List<User> findFollowersByUserId(@Param("userId") Long userId);
+	
 
 }

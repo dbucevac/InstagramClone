@@ -42,7 +42,7 @@ public class JpaPictureService implements PictureService {
 	@Override
 	public Optional<Picture> byPost(Long postId) {
 		// TODO Auto-generated method stub
-		return pictureRepository.findByPostd(postId);
+		return pictureRepository.findByPostId(postId);
 	}
 
 	

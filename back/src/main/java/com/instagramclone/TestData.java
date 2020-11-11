@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.instagramclone.model.Comment;
+import com.instagramclone.model.Like;
 import com.instagramclone.model.Post;
 import com.instagramclone.model.User;
 import com.instagramclone.model.UserRole;
 import com.instagramclone.repository.CommentRepository;
-import com.instagramclone.repository.PictureRepository;
+import com.instagramclone.repository.LikeRepository;
 import com.instagramclone.repository.PostRepository;
 import com.instagramclone.repository.UserRepository;
 
@@ -28,6 +29,9 @@ public class TestData {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private LikeRepository likeRepository;
 	
 	@PostConstruct
 	public void init() {
@@ -74,18 +78,29 @@ public class TestData {
 		
 		Post post2 = new Post();
 		post2.setCaption("Party party party!");
-		post1.setUser(user1);
+		post2.setUser(user1);
 		postRepository.save(post2);
 		
 		Post post3 = new Post();
 		post3.setCaption("Loveee");
-		post1.setUser(user2);
+		post3.setUser(user2);
 		postRepository.save(post3);
 		
 		Post post4 = new Post();
 		post4.setCaption("Happy Birthday");
-		post1.setUser(user2);
+		post4.setUser(user2);
 		postRepository.save(post4);
+		
+		
+		Like like1 = new Like();
+		like1.setPost(post1);
+		like1.setUser(user2);
+		likeRepository.save(like1);
+		
+		Like like2 = new Like();
+		like2.setPost(post2);
+		like2.setUser(user2);
+		likeRepository.save(like2);
 		
 		//Comments
 		
@@ -102,9 +117,6 @@ public class TestData {
 		comment2.setPost(post2);
 		comment2.setUser(user2);
 		commentRepository.save(comment2);
-		
-		
-		
 		
 		
 		
