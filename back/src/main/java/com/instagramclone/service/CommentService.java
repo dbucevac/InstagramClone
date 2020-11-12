@@ -11,6 +11,6 @@ public interface CommentService {
 	List<Comment> all();
 	Optional<Comment> one(Long id);
 	Comment save(Comment comment);
-	List<Comment> byUserIdAndPostId(Long userId, Long postId);
+	List<Comment> byPostId(Long postId);
 
 }

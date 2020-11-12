@@ -91,6 +91,11 @@ public class TestData {
 		post4.setUser(user2);
 		postRepository.save(post4);
 		
+		Post post5 = new Post();
+		post5.setCaption(":)))))");
+		post5.setUser(user1);
+		postRepository.save(post5);
+		
 		
 		Like like1 = new Like();
 		like1.setPost(post1);

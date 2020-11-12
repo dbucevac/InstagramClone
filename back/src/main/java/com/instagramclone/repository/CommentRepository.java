@@ -10,6 +10,6 @@ import com.instagramclone.model.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	
-	List<Comment> findByUserIdAndPostId(Long userId, Long postId);
+	List<Comment> findByPostId(Long postId);
 
 }

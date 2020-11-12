@@ -22,8 +22,8 @@ import com.instagramclone.support.UserDTOToUser;
 import com.instagramclone.support.UserToUserDTO;
 
 @RestController
-@RequestMapping("api/users")
-public class ApiUserController {
+@RequestMapping("api/users/{userId}/followers")
+public class ApiFollowerController {
 	
 	@Autowired
 	private UserService userService;
@@ -40,12 +40,13 @@ public class ApiUserController {
 	@Autowired
 	private PostToPostDTO toPostDto;
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<UserDTO> get(@PathVariable Long id){
+	@GetMapping("/followers")
+	public ResponseEntity<List<UserDTO>> getFollowers(@PathVariable Long id){
 		Optional<User> user = userService.one(id);
 		
 		if(user.isPresent()) {
-			UserDTO body = toDto.convert(user.get());
+			List<User> followers = userService.findFollowersByUserId(id);
+			List<UserDTO> body = toDto.convert(followers);
 			return new ResponseEntity<>(body, HttpStatus.OK);
 		}
 		else {
@@ -53,13 +54,11 @@ public class ApiUserController {
 		}
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<UserDTO>> get(){
+	@GetMapping("/followers/posts")
+	public ResponseEntity<List<PostDTO>> getPostsOfUsersFollowers(@PathVariable Long userId){
 		
-		List<User> users = userService.all();
-		List<UserDTO> body = toDto.convert(users);
-		return new ResponseEntity<>(body, HttpStatus.OK);
+		List<Post> postsOfFollowers = postService.byUsersFollowers(userId);
+		return new ResponseEntity<>(toPostDto.convert(postsOfFollowers), HttpStatus.OK);
 	}
-	
 
 }

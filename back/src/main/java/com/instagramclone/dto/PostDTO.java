@@ -6,7 +6,6 @@ public class PostDTO {
 	private Long id;
 	private String caption;
 	
-	
 	public Long getId() {
 		return id;
 	}
@@ -19,6 +18,7 @@ public class PostDTO {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
+
 	
 	
 

@@ -11,5 +11,6 @@ public interface PostService {
 	Optional<Post> one(Long id);
 	Post save(Post post);
 	List<Post> byUser(Long userId);
+	List<Post> byUsersFollowers(Long userId);
 
 }

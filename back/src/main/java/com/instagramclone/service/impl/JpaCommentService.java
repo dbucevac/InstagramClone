@@ -35,9 +35,9 @@ public class JpaCommentService implements CommentService{
 	}
 
 	@Override
-	public List<Comment> byUserIdAndPostId(Long userId, Long postId) {
+	public List<Comment> byPostId(Long postId) {
 		// TODO Auto-generated method stub
-		return commentRepository.findByUserIdAndPostId(userId, postId);
+		return commentRepository.findByPostId(postId);
 	}
 
 }

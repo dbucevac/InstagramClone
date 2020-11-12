@@ -41,9 +41,9 @@ public class JpaLikeService implements LikeService {
 	}
 
 	@Override
-	public List<Like> byUserIdAndPostId(Long userId, Long postId) {
+	public List<Like> byPostId(Long postId) {
 		// TODO Auto-generated method stub
-		return likeRepository.findByUserIdAndPostId(userId, postId);
+		return likeRepository.findByPostId(postId);
 	}
 
 }

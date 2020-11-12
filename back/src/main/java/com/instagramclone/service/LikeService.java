@@ -11,6 +11,6 @@ public interface LikeService {
 	Optional<Like> one(Long id);
 	Like save(Like like);
 	void delete(Long id);
-	List<Like> byUserIdAndPostId(Long userId, Long postId);
+	List<Like> byPostId(Long postId);
 
 }
