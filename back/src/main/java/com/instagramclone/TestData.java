@@ -1,5 +1,6 @@
 package com.instagramclone;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.instagramclone.repository.LikeRepository;
 import com.instagramclone.repository.PostRepository;
 import com.instagramclone.repository.UserRepository;
 
+
 @Component
 public class TestData {
 	
@@ -33,8 +35,9 @@ public class TestData {
 	@Autowired
 	private LikeRepository likeRepository;
 	
+	
 	@PostConstruct
-	public void init() {
+	public void init() throws IOException {
 		
 		//Users
 		

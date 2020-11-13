@@ -1,5 +1,6 @@
 package com.instagramclone.contoller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,9 @@ import com.instagramclone.service.LikeService;
 import com.instagramclone.service.PictureService;
 import com.instagramclone.service.PostService;
 import com.instagramclone.service.UserService;
+import com.instagramclone.support.CommentDTOToComment;
 import com.instagramclone.support.CommentToCommentDTO;
+import com.instagramclone.support.LikeDTOToLike;
 import com.instagramclone.support.LikeToLikeDTO;
 import com.instagramclone.support.PictureDTOToPicture;
 import com.instagramclone.support.PictureToPictureDTO;
@@ -56,7 +59,6 @@ public class ApiPostController {
 	
 	@Autowired
 	private CommentService commentService;
-
 	
 	@Autowired
 	private PictureToPictureDTO toPictureDto;
@@ -68,7 +70,14 @@ public class ApiPostController {
 	private LikeToLikeDTO toLikeDto;
 	
 	@Autowired
+	private CommentDTOToComment toComment;
+	
+	@Autowired
 	private CommentToCommentDTO toCommentDto;
+	
+	
+	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+
 	
 	
 	@GetMapping("/{id}")
@@ -86,6 +95,13 @@ public class ApiPostController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<PostDTO>> getPosts(@PathVariable Long userId){
+		
+		List<Post> posts = postService.byUser(userId);
+		return new ResponseEntity<>(toPostDto.convert(posts), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}/picture")
@@ -116,8 +132,14 @@ public class ApiPostController {
 		
 		Optional<User> user = userService.one(userId);
 		
+		String fileContentType = file.getContentType();
+		
 		if(!user.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		if(!contentTypes.contains(fileContentType)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 	    try {
@@ -148,7 +170,7 @@ public class ApiPostController {
 	}
 	
 	@GetMapping("/{id}/likes")
-	public ResponseEntity<List<LikeDTO>> getLikes(@PathVariable Long id, @PathVariable Long userId){
+	public ResponseEntity<List<LikeDTO>> getPostLikes(@PathVariable Long id, @PathVariable Long userId){
 		Optional<Post> post = postService.one(id);
 		
 		if(post.isPresent()) {
@@ -166,8 +188,65 @@ public class ApiPostController {
 		}
 	}
 	
+	@PostMapping("/{id}/likes")
+	public ResponseEntity<LikeDTO> like(
+			@PathVariable Long userId,
+			@PathVariable Long id){
+		
+		Optional<User> user = userService.one(userId);
+		Optional<Post> post = postService.one(id);
+		if(!user.isPresent()||!post.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		User userToUpdate = user.get();
+		Post postToUpdate = post.get();
+		
+		Optional<Like> existingLike = likeService.byPostIdAndUserId(postToUpdate.getId(), userToUpdate.getId());
+		
+		if(existingLike.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Like like = new Like();
+		Like persisted = likeService.save(like);
+		
+		userToUpdate.addLike(persisted);
+		postToUpdate.addLike(persisted);
+		likeService.save(persisted);
+		userService.save(userToUpdate);
+		postService.save(postToUpdate);
+		
+		return new ResponseEntity<>(toLikeDto.convert(persisted), HttpStatus.CREATED);
+	}
+	
+	
+	
+	@DeleteMapping("/{id}/likes/{likeId}")
+	public ResponseEntity<LikeDTO> unlike(
+			@PathVariable Long userId,
+			@PathVariable Long id,
+			@PathVariable Long likeId){
+		
+		Optional<User> user = userService.one(userId);
+		Optional<Post> post = postService.one(id);
+		if(!user.isPresent()||!post.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		Optional<Like> likeForDeletion = likeService.byPostIdAndUserId(id, userId);
+		
+		if(likeForDeletion.get().getId().equals(likeId)) {
+			likeService.delete(likeId);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} 
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	
 	@GetMapping("/{id}/comments")
-	public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long id, @PathVariable Long userId){
+	public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable Long id, @PathVariable Long userId){
 		Optional<Post> post = postService.one(id);
 		
 		if(post.isPresent()) {
@@ -183,6 +262,37 @@ public class ApiPostController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@PostMapping("/{id}/comments")
+	public ResponseEntity<CommentDTO> comment(
+			@RequestBody CommentDTO comment,
+			@PathVariable Long userId,
+			@PathVariable Long id){
+		
+		if(comment.getId() != null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Optional<User> user = userService.one(userId);
+		Optional<Post> post = postService.one(id);
+		if(!user.isPresent()||!post.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		User userToUpdate = user.get();
+		Post postToUpdate = post.get();
+		
+		Comment converted = toComment.convert(comment);
+		Comment persisted = commentService.save(converted);
+		
+		userToUpdate.addComment(persisted);
+		postToUpdate.addComment(persisted);
+		commentService.save(persisted);
+		userService.save(userToUpdate);
+		postService.save(postToUpdate);
+		
+		return new ResponseEntity<>(toCommentDto.convert(persisted), HttpStatus.CREATED);
 	}
 	
 	

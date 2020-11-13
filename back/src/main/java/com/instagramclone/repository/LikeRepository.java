@@ -12,5 +12,6 @@ import com.instagramclone.model.Like;
 public interface LikeRepository extends JpaRepository<Like, Long> {
 	
 	List<Like> findByPostId(Long postId);
+	Optional<Like> findByPostIdAndUserId(Long postId, Long userId);
 
 }
