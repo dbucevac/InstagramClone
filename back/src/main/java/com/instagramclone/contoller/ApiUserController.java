@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,13 +24,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.instagramclone.dto.LoginDTO;
+import com.instagramclone.dto.PasswordChangeDTO;
 import com.instagramclone.dto.PictureDTO;
 import com.instagramclone.dto.PostDTO;
 import com.instagramclone.dto.RegistrationDTO;
@@ -296,6 +301,49 @@ public class ApiUserController {
 		UserDTO respBody = toUserDto.convert(persisted);
 		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
 	}
+	
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> edit(
+			@PathVariable Long id,
+			@RequestBody UserDTO reqBody){
+		
+		if(!id.equals(reqBody.getId())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		User toEdit = toUser.convert(reqBody);
+		User persisted = userService.save(toEdit);
+		
+		UserDTO respBody = toUserDto.convert(persisted);
+		return new ResponseEntity<>(respBody, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT, params = "chpass")
+	public ResponseEntity<Void> changePassword(
+			@PathVariable Long id,
+			@RequestBody PasswordChangeDTO reqBody){
+		
+		if(!reqBody.getPassword().equals(reqBody.getPasswordConfirm())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		boolean result;
+		try {
+			result = userService.changePassword(id, reqBody);
+		} catch (EntityNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} 
+		
+		if(result) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		
+	}
+	
 	
 	
 	

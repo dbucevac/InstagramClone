@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.instagramclone.dto.PasswordChangeDTO;
@@ -18,6 +19,9 @@ public class JpaUserService implements UserService{
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Optional<User> one(Long id) {
@@ -71,10 +75,9 @@ public class JpaUserService implements UserService{
 			return false;
 		}
 
-		// ubacen deo koda zbog greske koja se desavala ako kroz ubacivanje podataka dva puta
-		// kriptujemo lozinku
-		//String encodedPass = passwordEncoder.encode(changeDto.getPassword());
-		//user.setPassword(encodedPass);
+
+		String encodedPass = passwordEncoder.encode(changeDto.getPassword());
+		user.setPassword(encodedPass);
 
 		userRepository.save(user);
 		return true;
