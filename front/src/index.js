@@ -1,17 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Home from "./components/Home";
+import Login from './components/authentication/Login'
+import NotFound from "./components/NotFound";
+import {
+  Route,
+  Link,
+  HashRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+class App extends React.Component {
+
+  render() {
+    
+      return (
+        <div>
+          <Router>
+            <nav>
+              <div className="nav-wrapper white">
+              <Link to="/" className="brand-logo">InstaClone</Link>
+              <ul id="nav-mobile" className="right">
+                  <li><Link to="/login">Login</Link></li>
+                  <li><Link to="/signup">Sign Up</Link></li>
+              </ul>
+              </div>
+            </nav>     
+              <Switch>
+              <Route exact path="/login" component={Login}></Route>
+              <Route path="/">
+                <Redirect to="/login"></Redirect>
+              </Route>
+              </Switch>
+          </Router>
+        </div>
+      );
+  }
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App />,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
