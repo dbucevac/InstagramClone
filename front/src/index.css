@@ -3,6 +3,9 @@
 body{
   background-color: #fff;
 }
+
+/*Header*/
+
 a{
   color:black!important;
 }
@@ -10,3 +13,55 @@ a{
 .brand-logo{
   font-family: 'Grand Hotel', cursive;
 }
+
+.logo-icon {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem!important;
+}
+
+/*Login Page*/
+
+.card{
+  margin-top: 3rem;
+
+}
+
+.card h3{
+  font-family: 'Grand Hotel', cursive;
+
+}
+
+.card-input-fields{
+  margin-top: 2rem;
+}
+
+.inputBtn {
+  width: 20rem!important;
+}
+
+input:focus {
+  border-bottom: 1px solid #1976d2!important;
+}
+
+.sbmtBtn {
+  width: 20rem!important;
+  margin-top: 2rem;
+}
+
+.span-signup{
+  margin-top: 2rem;
+}
+
+.signup-link{
+  color:#1976d2!important;
+  font-weight: bold;
+}
+
+.phone-image img{
+  margin-top: 1.8rem;
+  width:20rem;
+  margin-left: 3rem;
+}
+
+
+
