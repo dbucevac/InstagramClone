@@ -57,7 +57,7 @@ public class JpaPostService implements PostService{
 			throw new EntityNotFoundException();
 		}
 		
-		List<User> followingUses = userRepository.findByFollowingUsersId(userId);
+		List<User> followingUses = userRepository.findByFollowedUsersId(userId);
 		List<Post> followingUsesPosts = new ArrayList<Post>();
 		List<Post> allPosts = new ArrayList<Post>();
 		

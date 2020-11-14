@@ -198,8 +198,8 @@ public class ApiUserController {
 	@GetMapping("/{id}/followings/posts")
 	public ResponseEntity<List<PostDTO>> getPostsOfUsersFollowingUsers(@PathVariable Long id){
 		
-		List<Post> postsOfFollowers = postService.byUsersFollowingUsers(id);
-		return new ResponseEntity<>(toPostDto.convert(postsOfFollowers), HttpStatus.OK);
+		List<Post> postsOfFollingUsers = postService.byUsersFollowingUsers(id);
+		return new ResponseEntity<>(toPostDto.convert(postsOfFollingUsers), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{userId}")
