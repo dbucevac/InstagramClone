@@ -24,6 +24,7 @@ import com.instagramclone.dto.UserDTO;
 import com.instagramclone.model.Picture;
 import com.instagramclone.model.Post;
 import com.instagramclone.model.User;
+import com.instagramclone.repository.UserRepository;
 import com.instagramclone.service.PictureService;
 import com.instagramclone.service.PostService;
 import com.instagramclone.service.UserService;
@@ -137,7 +138,7 @@ public class ApiUserController {
 		
 	}
 	
-	@PostMapping("/{id}/followers/{userIdToFollowUnfollow}")
+	@PostMapping("/{id}/follow/{userIdToFollowUnfollow}")
 	public ResponseEntity<UserDTO> followUnfollow(@PathVariable Long id, @PathVariable Long userIdToFollowUnfollow){
 		Optional<User> user = userService.one(id);
 		Optional<User> userToFollowUnfollow = userService.one(userIdToFollowUnfollow);
@@ -145,27 +146,27 @@ public class ApiUserController {
 		if(user.isPresent() && userToFollowUnfollow.isPresent()) {
 			
 			if(!user.get().getId().equals(userToFollowUnfollow.get().getId())){
-				List<User> followers = userService.findFollowersByUserId(id);
-				if(followers.contains(userToFollowUnfollow.get())) {
+				List<User> followingUsers = userService.findFollowingUsersByUserId(id);
+				if(followingUsers.contains(userToFollowUnfollow.get())) {
 
-					List<User> newListFollowers = new ArrayList<>();
+					List<User> newListFollowingUsers = new ArrayList<>();
 					
-					for(User u : followers) {
+					for(User u : followingUsers) {
 						if(!u.getId().equals(userIdToFollowUnfollow)) {
-							newListFollowers.add(u);
+							newListFollowingUsers.add(u);
 						}else {
 							continue;
 						}
 					}
-					user.get().setFollowers(newListFollowers);			
+					user.get().setFollowingUsers(newListFollowingUsers);		
 					userService.save(user.get());
 					
 					UserDTO body = toUserDto.convert(userToFollowUnfollow.get());
 					return new ResponseEntity<>(body, HttpStatus.OK);
 				}
 				
-				followers.add(userToFollowUnfollow.get());
-				user.get().setFollowers(followers);			
+				followingUsers.add(userToFollowUnfollow.get());
+				user.get().setFollowingUsers(followingUsers);			
 				userService.save(user.get());
 				
 				UserDTO body = toUserDto.convert(userToFollowUnfollow.get());
@@ -177,6 +178,38 @@ public class ApiUserController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	
+	@GetMapping("/{id}/followings")
+	public ResponseEntity<List<UserDTO>> getFollowingUsers(@PathVariable Long id){
+		Optional<User> user = userService.one(id);
+		
+		if(user.isPresent()) {
+			List<User> followers = userService.findFollowingUsersByUserId(id);
+			List<UserDTO> body = toUserDto.convert(followers);
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/{id}/followings/posts")
+	public ResponseEntity<List<PostDTO>> getPostsOfUsersFollowingUsers(@PathVariable Long id){
+		
+		List<Post> postsOfFollowers = postService.byUsersFollowingUsers(id);
+		return new ResponseEntity<>(toPostDto.convert(postsOfFollowers), HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<Void> delete(@PathVariable Long userId){
+		if(!userService.one(userId).isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} 
+
+		userService.delete(userId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	
@@ -192,23 +225,6 @@ public class ApiUserController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-	
-	@GetMapping("/{id}/followers/posts")
-	public ResponseEntity<List<PostDTO>> getPostsOfUsersFollowers(@PathVariable Long id){
-		
-		List<Post> postsOfFollowers = postService.byUsersFollowers(id);
-		return new ResponseEntity<>(toPostDto.convert(postsOfFollowers), HttpStatus.OK);
-	}
-	
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<Void> delete(@PathVariable Long userId){
-		if(!userService.one(userId).isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} 
-
-		userService.delete(userId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	

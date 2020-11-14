@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "(:username IS NULL or u.username like :username )")
 	List<User> searchUsers(@Param("username") String username);
 
-	List<User> findByFollowerOfId(Long userId);
+	List<User> findByFollowedUsersId(Long userId);
+	
+	List<User> findByFollowingUsersId(Long userId);
 	
 }

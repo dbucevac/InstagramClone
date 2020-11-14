@@ -49,7 +49,7 @@ public class JpaPostService implements PostService{
 	}
 
 	@Override
-	public List<Post> byUsersFollowers(Long userId) {
+	public List<Post> byUsersFollowingUsers(Long userId) {
 		// TODO Auto-generated method stub
 		Optional<User> result = userRepository.findById(userId);
 		
@@ -57,13 +57,13 @@ public class JpaPostService implements PostService{
 			throw new EntityNotFoundException();
 		}
 		
-		List<User> followers = userRepository.findByFollowerOfId(userId);
-		List<Post> usersFollowersPosts = new ArrayList<Post>();
+		List<User> followingUses = userRepository.findByFollowingUsersId(userId);
+		List<Post> followingUsesPosts = new ArrayList<Post>();
 		List<Post> allPosts = new ArrayList<Post>();
 		
-		for(User usersFollower: followers) {
-			usersFollowersPosts = postRepository.findByUserId(usersFollower.getId());
-			for(Post p : usersFollowersPosts) {
+		for(User usersFollowingUser: followingUses) {
+			followingUsesPosts = postRepository.findByUserId(usersFollowingUser.getId());
+			for(Post p : followingUsesPosts) {
 				allPosts.add(p);
 			}
 		}

@@ -53,16 +53,16 @@ public class User {
 	@ManyToMany
 	@JoinTable(name="followers",
 	 joinColumns=@JoinColumn(name="userId"),
-	 inverseJoinColumns=@JoinColumn(name="followerId")
+	 inverseJoinColumns=@JoinColumn(name="followedUserId")
 	)
-	private List<User> followers = new ArrayList<>();
+	private List<User> followingUsers = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name="followers",
-	 joinColumns=@JoinColumn(name="followerId"),
+	 joinColumns=@JoinColumn(name="followedUserId"),
 	 inverseJoinColumns=@JoinColumn(name="userId")
 	)
-	private List<User> followerOf = new ArrayList<>();
+	private List<User> followedUsers = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -165,12 +165,12 @@ public class User {
 		}
 	}
 
-	public List<User> getFollowers() {
-		return followers;
+	public List<User> getFollowingUsers() {
+		return followingUsers;
 	}
 
-	public void setFollowers(List<User> followers) {
-		this.followers = followers;
+	public void setFollowingUsers(List<User> followingUsers) {
+		this.followingUsers = followingUsers;
 	}
 	
 	

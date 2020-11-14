@@ -66,10 +66,10 @@ public class TestData {
 		userRepository.save(user2);
 		
 		
-		List<User> followers1 = new ArrayList<User>();
-		followers1.add(user0);
-		followers1.add(user1);
-		user2.setFollowers(followers1);
+		List<User> followingUsers1 = new ArrayList<User>();
+		followingUsers1.add(user0);
+		followingUsers1.add(user1);
+		user2.setFollowingUsers(followingUsers1);
 		userRepository.save(user2);
 		
 		//Posts

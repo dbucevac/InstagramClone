@@ -17,7 +17,7 @@ public interface UserService {
 	boolean changePassword(Long id, PasswordChangeDTO changeDto);
 	List<User> searchUsers(@Param("username") String username);
 	
+	List<User> findFollowingUsersByUserId(@Param("userId") Long userId);
 	List<User> findFollowersByUserId(@Param("userId") Long userId);
-	
 	
 }
