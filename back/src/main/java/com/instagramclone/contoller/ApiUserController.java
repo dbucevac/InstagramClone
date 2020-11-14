@@ -9,22 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.instagramclone.dto.LoginDTO;
 import com.instagramclone.dto.PictureDTO;
 import com.instagramclone.dto.PostDTO;
+import com.instagramclone.dto.RegistrationDTO;
 import com.instagramclone.dto.UserDTO;
 import com.instagramclone.model.Picture;
 import com.instagramclone.model.Post;
 import com.instagramclone.model.User;
+import com.instagramclone.model.UserRole;
 import com.instagramclone.repository.UserRepository;
+import com.instagramclone.security.TokenUtils;
 import com.instagramclone.service.PictureService;
 import com.instagramclone.service.PostService;
 import com.instagramclone.service.UserService;
@@ -57,6 +71,18 @@ public class ApiUserController {
 	
 	@Autowired
 	private PictureToPictureDTO toPictureDto;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private TokenUtils tokenUtils;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
 	
@@ -225,6 +251,50 @@ public class ApiUserController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity login(@RequestBody LoginDTO dto) {
+		// Perform the authentication
+		UsernamePasswordAuthenticationToken authenticationToken =
+				new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+		Authentication authentication = authenticationManager.authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		try {
+			// Reload user details so we can generate token
+			UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
+			return ResponseEntity.ok(tokenUtils.generateToken(userDetails));
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@PostMapping("/register")
+	public ResponseEntity<UserDTO> register(
+			@RequestBody @Validated RegistrationDTO reqBody){
+
+		if(reqBody.getId() != null 
+				|| !reqBody.getPassword().equals(reqBody.getPasswordConfirm())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		String username = reqBody.getUsername();
+		String email = reqBody.getEmail();
+		
+		Optional<User> userWithSameUsername = userService.byUsername(username);
+		Optional<User> userWithSameEmail = userService.byEmail(email);
+		
+		if(userWithSameUsername.isPresent() || userWithSameEmail.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		User toAdd = toUser.convert(reqBody);
+		toAdd.setPassword(passwordEncoder.encode(reqBody.getPassword()));
+		toAdd.setRole(UserRole.USER);
+		
+		User persisted = userService.save(toAdd);
+		
+		UserDTO respBody = toUserDto.convert(persisted);
+		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
 	}
 	
 	

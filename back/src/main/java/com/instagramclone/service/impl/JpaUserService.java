@@ -49,6 +49,12 @@ public class JpaUserService implements UserService{
 		// TODO Auto-generated method stub
 		return userRepository.findFirstByUsername(username);
 	}
+	
+	@Override
+	public Optional<User> byEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.findFirstByEmail(email);
+	}
 
 	@Override
 	public boolean changePassword(Long id, PasswordChangeDTO changeDto) {
@@ -94,6 +100,8 @@ public class JpaUserService implements UserService{
 		// TODO Auto-generated method stub
 		return userRepository.findByFollowingUsersId(userId);
 	}
+
+	
 	
 	
 

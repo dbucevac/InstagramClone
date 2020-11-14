@@ -4,11 +4,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import com.instagramclone.model.UserRole;
+
 public class UserDTO {
 	
 	private Long id;
 	@NotEmpty
-	@Pattern(regexp="/^\\S*$/")
+	@Pattern(regexp="^[a-zA-Z0-9]*$")
 	private String username;
 	@NotEmpty
 	@Email
@@ -39,8 +41,7 @@ public class UserDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
 	
 
 }

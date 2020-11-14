@@ -14,6 +14,7 @@ import com.instagramclone.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	
 	Optional<User> findFirstByUsername(String username);
+	Optional<User> findFirstByEmail(String email);
 	
 	@Query("SELECT u FROM User u WHERE "
 			+ "(:username IS NULL or u.username like :username )")

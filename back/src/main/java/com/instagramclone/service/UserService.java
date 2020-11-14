@@ -14,10 +14,11 @@ public interface UserService {
 	User save(User user);
 	void delete(Long id);
 	Optional<User> byUsername(String username);
+	Optional<User> byEmail(String email);
 	boolean changePassword(Long id, PasswordChangeDTO changeDto);
 	List<User> searchUsers(@Param("username") String username);
-	
 	List<User> findFollowingUsersByUserId(@Param("userId") Long userId);
 	List<User> findFollowersByUserId(@Param("userId") Long userId);
+	
 	
 }
