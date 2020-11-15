@@ -102,7 +102,7 @@ class Signup extends React.Component{
             <div className="row">
                 <div className="col s12 m3"></div>
                 <div className="col s12 m6">
-                <div className="card white">
+                <div className="card white signup-card">
                     <div className="card-content center black-text">
                     <h3 className="center">InstaClone</h3>
                     <h6 className="signup-subtitle">Sign up to see photos and videos from your friends.</h6>

@@ -26,17 +26,27 @@ class App extends React.Component {
           <Router>
             <nav>
               <div className="nav-wrapper white">
-              <Link to="/" className="brand-logo"><i className="small material-icons logo-icon">camera_alt</i>InstaClone</Link>
+              <Link to="/" className="brand-logo"><i className="small material-icons logo-icon">camera_alt</i>InstaClone</Link>  
               <ul id="nav-mobile" className="right">
-                  <li><Link to="/">Home</Link></li>
+                  <li >
+                    <form style={{"marginRight":"2rem"}}>
+                        <input id="search" type="search" placeholder="Search"></input>
+                    </form>
+                  </li>
+                  <li><Link to="/post"><i className="small material-icons logo-icon" title="Post a photo">add_box</i></Link></li>
+                  <li><Link to="/"><i className="small material-icons logo-icon" title="Home">home</i></Link></li>
+                  <li><Link to="/account"><i className="small material-icons logo-icon" title="Account">settings</i></Link></li>
+                  <li><Link to="/profile" className="btn-floating pink accent-1 white-text profile-icon" title={username + " profile"}>{username.charAt(0).toUpperCase()}</Link></li>
                   <li><Link to="" onClick={() => {
                   logout();
-                }}>Logout</Link></li>
+                }}><i className="small material-icons logo-icon" title="Log out">power_settings_new</i></Link></li>
               </ul>
               </div>
             </nav>     
               <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" render={(props) => (
+                  <Home {...props} username={username} />)}>
+                </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>
               </Route>

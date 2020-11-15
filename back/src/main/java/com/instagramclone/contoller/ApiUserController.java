@@ -103,6 +103,18 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	@RequestMapping(value="/{username}", method = RequestMethod.GET, params = "username")
+	public ResponseEntity<UserDTO> getUser(@PathVariable String username){
+		Optional<User> user = userService.byUsername(username);
+		
+		if(user.isPresent()) {
+			UserDTO body = toUserDto.convert(user.get());
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	
 	@GetMapping

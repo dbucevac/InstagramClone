@@ -19,23 +19,33 @@ a{
   margin-right: 0.5rem!important;
 }
 
+.profile-icon{
+  text-align: center;
+}
+
+nav{
+  margin-bottom: 4rem;
+}
+
 /*Login Page*/
 
-.card{
+.login-card, .signup-card{
   margin-top: 19vh;
 
 }
 
-.card h3{
+.login-card h3, .signup-card h3{
   font-family: 'Grand Hotel', cursive;
 
 }
 
-.card-input-fields{
+.login-card .card-input-fields,
+.signup-card .card-input-fields{
   margin-top: 2rem;
 }
 
-.inputBtn {
+.login-card .inputBtn,
+.signup-card .inputBtn {
   width: 20rem!important;
 }
 
@@ -43,7 +53,8 @@ input:focus {
   border-bottom: 1px solid #1976d2!important;
 }
 
-.sbmtBtn {
+.login-card .sbmtBtn,
+.signup-card .sbmtBtn {
   width: 20rem!important;
   margin-top: 2rem;
 }
@@ -71,5 +82,12 @@ input:focus {
   margin-bottom: 0.3rem;
 }
 
+/*Post*/
+
+.post{
+  max-width: 55rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 

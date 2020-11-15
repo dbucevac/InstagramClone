@@ -37,7 +37,7 @@ class Login extends React.Component {
                 </div>
                 </div>
                 <div className="col s12 m6">
-                <div className="card medium white">
+                <div className="card medium white login-card">
                     <div className="card-content center black-text">
                     <h3 className="center">InstaClone</h3>
                     <form>
