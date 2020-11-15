@@ -10,7 +10,7 @@ public class RegistrationDTO extends UserDTO{
 	private String password;
 	@NotEmpty
 	private String passwordConfirm;
-	
+	 
 	
 	public String getPassword() {
 		return password;
