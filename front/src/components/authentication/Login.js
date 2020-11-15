@@ -1,7 +1,5 @@
 import React from "react";
-import {
-    Link
-  } from "react-router-dom";
+import {Link} from "react-router-dom";
 import {login} from '../../services/auth';
 import phoneImage from '../../resources/phone.png'
 
@@ -26,7 +24,7 @@ class Login extends React.Component {
 
   doLogin(){
     login(this.state);
-    
+    this.props.history.push('/'); 
   }
 
   render() {
@@ -58,7 +56,6 @@ class Login extends React.Component {
                         this.valueInputChange(e);}}></input>
 
                         <button className="btn-small blue darken-2 sbmtBtn" 
-                        type="submit"
                         onClick={() => {this.doLogin()}}>Log In</button>
                     </form>
                         <div className="span-signup">

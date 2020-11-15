@@ -26,10 +26,10 @@ class App extends React.Component {
           <Router>
             <nav>
               <div className="nav-wrapper white">
-              <Link to="/" className="brand-logo"><i class="small material-icons logo-icon">camera_alt</i>InstaClone</Link>
+              <Link to="/" className="brand-logo"><i className="small material-icons logo-icon">camera_alt</i>InstaClone</Link>
               <ul id="nav-mobile" className="right">
                   <li><Link to="/">Home</Link></li>
-                  <li><Link to="/logout" onClick={() => {
+                  <li><Link to="" onClick={() => {
                   logout();
                 }}>Logout</Link></li>
               </ul>
@@ -53,6 +53,7 @@ class App extends React.Component {
         <Router>  
               <Switch>
               <Route exact path="/login" component={Login}></Route>
+              <Route exact path="/signup" component={Signup}></Route>
               <Route path="/">
                 <Redirect to="/login"></Redirect>
               </Route>

@@ -22,7 +22,7 @@ a{
 /*Login Page*/
 
 .card{
-  margin-top: 3rem;
+  margin-top: 19vh;
 
 }
 
@@ -48,19 +48,27 @@ input:focus {
   margin-top: 2rem;
 }
 
-.span-signup{
+.span-signup, .span-login{
   margin-top: 2rem;
 }
 
-.signup-link{
+.signup-link, .login-link {
   color:#1976d2!important;
   font-weight: bold;
 }
 
 .phone-image img{
-  margin-top: 1.8rem;
+  margin-top: 10vh;
   width:20rem;
-  margin-left: 3rem;
+  margin-left: 4rem;
+}
+
+/*Signup*/
+
+.signup-subtitle{
+  color: rgb(99, 97, 97);
+  margin: 0 3rem;
+  margin-bottom: 0.3rem;
 }
 
 
