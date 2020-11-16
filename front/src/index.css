@@ -40,12 +40,14 @@ nav{
 }
 
 .login-card .card-input-fields,
-.signup-card .card-input-fields{
+.signup-card .card-input-fields,
+.file-upload-card .card-input-fields {
   margin-top: 2rem;
 }
 
 .login-card .inputBtn,
-.signup-card .inputBtn {
+.signup-card .inputBtn,
+.file-upload-card .inputBtn {
   width: 20rem!important;
 }
 
@@ -54,7 +56,8 @@ input:focus {
 }
 
 .login-card .sbmtBtn,
-.signup-card .sbmtBtn {
+.signup-card .sbmtBtn,
+.file-upload-card .sbmtBtn {
   width: 20rem!important;
   margin-top: 2rem;
 }
@@ -90,4 +93,10 @@ input:focus {
   margin-right: auto;
 }
 
+/*File Upload*/
+
+.file-field{
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
 

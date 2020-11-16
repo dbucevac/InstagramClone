@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup'
 import NotFound from "./components/NotFound";
+import UploadFile from './components/UploadFile'
 import {
   Route,
   Link,
@@ -33,7 +34,7 @@ class App extends React.Component {
                         <input id="search" type="search" placeholder="Search"></input>
                     </form>
                   </li>
-                  <li><Link to="/post"><i className="small material-icons logo-icon" title="Post a photo">add_box</i></Link></li>
+                  <li><Link to="/uploadpicture"><i className="small material-icons logo-icon" title="Post a photo">add_box</i></Link></li>
                   <li><Link to="/"><i className="small material-icons logo-icon" title="Home">home</i></Link></li>
                   <li><Link to="/account"><i className="small material-icons logo-icon" title="Account">settings</i></Link></li>
                   <li><Link to="/profile" className="btn-floating pink accent-1 white-text profile-icon" title={username + " profile"}>{username.charAt(0).toUpperCase()}</Link></li>
@@ -46,6 +47,9 @@ class App extends React.Component {
               <Switch>
               <Route exact path="/" render={(props) => (
                   <Home {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/uploadpicture" render={(props) => (
+                  <UploadFile {...props} username={username} />)}>
                 </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>
