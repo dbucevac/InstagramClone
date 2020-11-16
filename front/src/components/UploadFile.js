@@ -97,20 +97,7 @@ class UploadFile extends React.Component {
         this.props.history.push('/')
         alert("Your picture is posted!")
         }
-
-        /*
-        .then(res => {
-            
-            this.props.history.push('/')
-        })
-        .catch(error => {
-            alert('Error during file upload')
-    })
-    */
     }; 
-
-
-
 
 
   render() {
