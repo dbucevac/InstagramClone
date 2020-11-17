@@ -97,8 +97,8 @@ class UploadFile extends React.Component {
         this.props.history.push('/')
         alert("Your picture is posted!")
         }
-    }; 
 
+    }; 
 
   render() {
       
