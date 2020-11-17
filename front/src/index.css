@@ -99,4 +99,40 @@ input:focus {
   margin-bottom: 3rem;
   margin-top: 1rem;
 }
+/*Profile Page*/
+.profilePictureAvatar{
+  width: 12rem;
+  height: 12rem;
+  border-radius: 6rem;
+}
+
+.profileInfo{
+  margin-left: 4rem;
+  
+}
+
+.profileStatistics{
+  display: flex;
+  justify-content: space-between;
+  width: 108%;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 5rem;
+}
+
+.galleryItem {
+  width: 30%;
+  max-height: 20rem;
+  margin: 1rem;
+}
+
+.galleryItem:hover {
+  cursor: pointer;
+}
 

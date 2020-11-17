@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from './Post';
+import PostItem from './PostItem';
 import Axios from '../apis/Axios';
 
 class Home extends React.Component {
@@ -55,7 +55,7 @@ getFollowingUsersPosts() {
       <div className="row">
         <div className="col s12">
         {this.state.postsOfFollowingUsers.map(post => (
-                <Post key={post.id} caption={post.caption}
+                <PostItem key={post.id} caption={post.caption}
                 />
             ))}
         </div>

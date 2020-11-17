@@ -6,6 +6,8 @@ import Signup from './components/authentication/Signup'
 import NotFound from "./components/NotFound";
 import UploadFile from './components/UploadFile';
 import Profile from './components/Profile';
+import Account from './components/Account';
+import Post from './components/Post';
 import {
   Route,
   Link,
@@ -53,6 +55,12 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/profile" render={(props) => (
                   <Profile {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/account" render={(props) => (
+                  <Account {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/posts/:id" render={(props) => (
+                  <Post {...props} username={username} />)}>
                 </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>

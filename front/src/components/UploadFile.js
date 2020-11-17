@@ -96,6 +96,7 @@ class UploadFile extends React.Component {
         Axios.post("/users/" + userId + "/posts", file);
         this.props.history.push('/')
         alert("Your picture is posted!")
+
         }
 
     }; 
