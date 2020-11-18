@@ -104,6 +104,7 @@ public class ApiPostController {
 		return new ResponseEntity<>(toPostDto.convert(posts), HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/{id}/picture")
 	public ResponseEntity<byte[]> getPostPicture(@PathVariable Long id, @PathVariable Long userId){
 		Optional<Post> post = postService.one(id);

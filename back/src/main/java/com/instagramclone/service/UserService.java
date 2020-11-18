@@ -15,6 +15,7 @@ public interface UserService {
 	void delete(Long id);
 	Optional<User> byUsername(String username);
 	Optional<User> byEmail(String email);
+	Optional<User> byPost(Long postId);
 	boolean changePassword(Long id, PasswordChangeDTO changeDto);
 	List<User> searchUsers(@Param("username") String username);
 	List<User> findFollowingUsersByUserId(@Param("userId") Long userId);

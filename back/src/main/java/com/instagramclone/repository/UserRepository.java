@@ -24,4 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	List<User> findByFollowingUsersId(Long userId);
 	
+	Optional<User> findByPostsId(Long postId);
+	
+	
 }

@@ -43,7 +43,7 @@ getLoggedInUsersPosts() {
         })
         .catch(error => {
             // handle error
-            //console.log(error);
+            console.log(error);
             //alert('Error occured please try again!');
          });
 }
@@ -63,7 +63,7 @@ getPostImages(){
         })
         .catch(error => {
             // handle error
-            //console.log(error);
+            console.log(error);
             //alert('Error occured please try again!');
          });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from '../apis/Axios';
+import {Link} from 'react-router-dom';
 
 class Post extends React.Component {
 
@@ -68,13 +69,18 @@ getPostImage(){
     return (
     <div className="post">
         <div className="card post-card">
-            <h5>{this.state.username}</h5>
+            <h5 className="postHeader">
+            <Link to="/userprofile" className="btn-floating blue accent-1 white-text profile-icon otherUserProfileIcon" title={this.state.username + " profile"}>
+              <img className="otherUserProfileImage" src="https://images.unsplash.com/photo-1505886410478-e9e273c2ac09?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"></img>
+            </Link>
+            {this.state.username}
+            </h5>
             <div className="card-image">
                 <img src={this.state.profileImageUrl} alt={this.state.username + " picture"}/>
             </div>
             
             <h6 style={{"verticalAlign":"center"}}><i className="small material-icons" style={{"color":"red"}}>favorite</i>569 Likes</h6>
-            <h6>{this.state.post.caption}</h6>
+            <h6 className="postCaption">{this.state.post.caption}</h6>
             <h6>messages</h6>
             <ul>
                 <li>Provera</li>
