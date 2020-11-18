@@ -11,12 +11,15 @@ class PostItem extends React.Component {
       userId: this.props.userId,
       postId: this.props.postId,
       user: {},
-      post:{}
+      post:{},
+      profileImageUrl:null
+
     };
   }
 
   componentDidMount() {
     this.getUser();
+    
     
   }
 
@@ -25,10 +28,30 @@ class PostItem extends React.Component {
         .then(res => {
             this.setState({user: res.data});
             this.getPost()
+            this.getProfilePicture()
         })
         .catch(error => {
             console.log(error)
         })
+}
+
+getProfilePicture(){
+
+  Axios.get('/users/' + this.state.userId + '/picture', {
+  method: 'GET',
+  responseType: 'blob' }).then(res => {
+          // handle success
+          const file = new Blob([res.data]);
+          const fileURL = URL.createObjectURL(file);
+
+          this.setState({profileImageUrl: fileURL});
+  
+      })
+      .catch(error => {
+          // handle error
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
 }
 
 getPost(){
@@ -45,12 +68,13 @@ getPost(){
 
 
   render() {
+    let profilePicture = this.state.profileImageUrl===null?"https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=715&q=80":this.state.profileImageUrl;
     return (
     <div className="post">
         <div className="card post-card">
             <h5 className="postHeader">
             <Link to="/userprofile" className="btn-floating blue accent-1 white-text profile-icon otherUserProfileIcon" title={this.state.user.username + " profile"}>
-              <img className="otherUserProfileImage" src="https://images.unsplash.com/photo-1510913415497-e34c432bd039?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"></img>
+              <img className="otherUserProfileImage" src={profilePicture}></img>
             </Link>
             {this.state.user.username}</h5>
             <div className="card-image">

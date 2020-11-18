@@ -1,6 +1,8 @@
 import React from 'react';
 import Axios from '../apis/Axios';
 import {Link} from 'react-router-dom';
+import pictureUpload from "../resources/PictureUpload.jpg"
+
 class Profile extends React.Component {
 
   constructor(props) {
@@ -22,11 +24,14 @@ class Profile extends React.Component {
     
   }
 
+
 getLoggedInUser(){
     Axios.get('/users/?username='+this.state.username)
         .then(res => {
             this.setState({loggedInUser: res.data[0]});
             this.getLoggedInUsersPosts();
+            this.getProfilePicture()
+            
         })
         .catch(error => {
             console.log(error)
@@ -70,19 +75,39 @@ getPostImages(){
   })
 }
 
+getProfilePicture(){
+
+  Axios.get('/users/' + this.state.loggedInUser.id + '/picture', {
+  method: 'GET',
+  responseType: 'blob' }).then(res => {
+          // handle success
+          const file = new Blob([res.data]);
+          const fileURL = URL.createObjectURL(file);
+
+          this.setState({profileImageUrl: fileURL});
+          
+      })
+      .catch(error => {
+          // handle error
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
+}
+
+
 goToPostImage(postId) {
     this.props.history.push("/posts/" + postId);
   }
 
   render() {
-
+    let profilePicture = this.state.profileImageUrl===null?pictureUpload:this.state.profileImageUrl;
     return( 
     <div>  
       <div className="container">
         <div className="row bla">
         <div className="col s2"></div>
           <div className="col s3">
-            <Link to="/uploadprofilepicture"><img className="profilePictureAvatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"/></Link>
+            <Link to="/uploadprofilepicture"><img className="profilePictureAvatar" src={profilePicture}/></Link>
           </div>
           <div className="col s5 profileInfo">
           <h3>{this.state.username}

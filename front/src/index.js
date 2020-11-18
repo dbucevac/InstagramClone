@@ -5,6 +5,7 @@ import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup'
 import NotFound from "./components/NotFound";
 import UploadFile from './components/UploadFile';
+import UploadProfilePicture from './components/UploadProfilePicture';
 import Profile from './components/Profile';
 import Account from './components/Account';
 import Post from './components/Post';
@@ -52,6 +53,9 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/uploadpicture" render={(props) => (
                   <UploadFile {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/uploadprofilepicture" render={(props) => (
+                  <UploadProfilePicture {...props} username={username} />)}>
                 </Route>
                 <Route exact path="/profile" render={(props) => (
                   <Profile {...props} username={username} />)}>
