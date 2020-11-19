@@ -30,6 +30,7 @@ class App extends React.Component {
         <div>
         {console.log(token + ' ' + username)}
           <Router>
+          <div className="navbar-fixed">
             <nav>
               <div className="nav-wrapper white">
               <Link to="/" className="brand-logo"><i className="small material-icons logo-icon">camera_alt</i>InstaClone</Link>  
@@ -47,7 +48,8 @@ class App extends React.Component {
                 }}><i className="small material-icons logo-icon" title="Log out">power_settings_new</i></Link></li>
               </ul>
               </div>
-            </nav>     
+            </nav>
+            </div>     
               <Switch>
               <Route exact path="/" render={(props) => (
                   <Home {...props} username={username} />)}>

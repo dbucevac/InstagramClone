@@ -9,18 +9,20 @@ class OtherUserProfile extends React.Component {
 
     this.state = { 
       loggedInUsername: this.props.username,
+      loggedInUser:{},
       userId: this.props.match.params.id,
       user: {},
       posts:[],
       profileImageUrl:null,
       images:[],
-      postsWithImage:[]
-
+      postsWithImage:[],
+      followedByLoggedInUser: false
     };
   }
 
   componentDidMount() {
     this.getUser();
+    this.getLoggedInUser();
     
   }
 
@@ -28,7 +30,7 @@ class OtherUserProfile extends React.Component {
 getUser(){
     Axios.get('/users/'+this.state.userId)
         .then(res => {
-            console.log(res.data)
+            //console.log(res.data)
             this.setState({user: res.data});
             this.getUsersPosts();
             this.getProfilePicture()
@@ -76,6 +78,36 @@ getPostImages(){
   })
 }
 
+getLoggedInUser(){
+  Axios.get('/users/?username='+this.state.loggedInUsername)
+      .then(res => {
+          this.setState({loggedInUser: res.data[0]});
+          console.log(res.data)
+          this.getStatusOfFollowing()
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
+
+getStatusOfFollowing(){
+  Axios.get('/users/'+this.state.loggedInUser.id + '/followings')
+      .then(res => {
+
+          var followings = res.data;
+          followings.map(follow =>{
+            if(follow.id === this.state.user.id){
+              this.setState({followedByLoggedInUser:true})
+            }
+          })
+          
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
+
+
 getProfilePicture(){
 
   Axios.get('/users/' + this.state.user.id + '/picture', {
@@ -95,6 +127,20 @@ getProfilePicture(){
        });
 }
 
+followUnfollow(){
+  Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.user.id)
+  .then(
+    this.setState({followedByLoggedInUser: !this.state.followedByLoggedInUser})
+  )
+  .catch(error => {
+    console.log(error)
+})
+}
+
+
+
+
+
 
 goToPostImage(postId) {
     this.props.history.push("/posts/" + postId);
@@ -102,6 +148,8 @@ goToPostImage(postId) {
 
   render() {
     let profilePicture = this.state.profileImageUrl===null?noImage:this.state.profileImageUrl;
+    let followStatus = this.state.followedByLoggedInUser?<button className="waves-effect btn-small grey darken-1" style={{"marginLeft": "2rem"}} onClick={() => {this.followUnfollow()}}>Unfollow</button>:
+    <button className="waves-effect btn-small blue darken-1" style={{"marginLeft": "2rem"}} onClick={() => {this.followUnfollow()}}>Follow</button>
     if(this.state.user.username !==this.state.loggedInUsername && this.state.user.id !== undefined){
       return( 
         <div>  
@@ -113,7 +161,7 @@ goToPostImage(postId) {
               </div>
               <div className="col s5 profileInfo">
               <h3>{this.state.user.username}
-              <i className="small material-icons logo-icon" title="Follow" style={{"verticalAlign":"text-top", "color": "grey"}}>add</i>
+              {followStatus}
               </h3>
               <div className="profileStatistics">
                 <h6>{this.state.posts.length} posts</h6>
@@ -128,6 +176,7 @@ goToPostImage(postId) {
             </div>
           </div>
           <div className="gallery">
+          {console.log(this.state.followedByLoggedInUser)}
             {this.state.postsWithImage.map(post=>(
               <img key={post.postId} src={post.imgUrl} className="galleryItem" alt={this.state.user.username + " picture"} onClick={() => this.goToPostImage(post.postId)}/>
             ))}

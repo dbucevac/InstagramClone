@@ -23,7 +23,7 @@ a{
   text-align: center;
 }
 
-nav{
+.navbar-fixed{
   margin-bottom: 4rem;
 }
 
@@ -157,10 +157,14 @@ input:focus {
   cursor: pointer;
 }
 
-/*Page Not Found Component*/
+/*Page Not Found Component*/ 
 
+.error{
+  border: 10px double pink;
+  margin-top:5rem;
+}
 .errorTxt{
-  font-size:5rem;
+  font-size:4rem;
   font-weight: 700;
 }
 
