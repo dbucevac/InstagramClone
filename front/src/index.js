@@ -7,6 +7,7 @@ import NotFound from "./components/NotFound";
 import UploadFile from './components/UploadFile';
 import UploadProfilePicture from './components/UploadProfilePicture';
 import Profile from './components/Profile';
+import OtherUserProfile from './components/OtherUserProfile'
 import Account from './components/Account';
 import Post from './components/Post';
 import {
@@ -65,6 +66,9 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/posts/:id" render={(props) => (
                   <Post {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/users/:id" render={(props) => (
+                  <OtherUserProfile {...props} username={username} />)}>
                 </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>

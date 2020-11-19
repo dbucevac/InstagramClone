@@ -21,13 +21,10 @@ class Home extends React.Component {
     
   }
 
-  //#region API calls
-
 getLoggedInUser(){
     Axios.get('/users/?username='+this.state.username)
         .then(res => {
             this.setState({loggedInUser: res.data[0]});
-            //this.getFollowingUsersPosts();
             this.getFollowingUsersPosts()
         })
         .catch(error => {
@@ -38,13 +35,12 @@ getLoggedInUser(){
 getFollowingUsersPosts() {
   Axios.get('/users/' + this.state.loggedInUser.id + '/followings/posts')
       .then(res => {
-          // handle success
 
           this.setState({postsOfFollowingUsers: res.data});
           this.getFollowingUsers()
       })
       .catch(error => {
-          // handle error
+
           console.log(error);
           //alert('Error occured please try again!');
        });
@@ -54,13 +50,12 @@ getFollowingUsers(){
   this.state.postsOfFollowingUsers.map(post =>{
   Axios.get('/users/post/' + post.id)
       .then(res => {
-          // handle success
         
           this.setState({usersWithPosts: this.state.usersWithPosts.concat({postId:post.id, userId:res.data.id})});
           this.getFollowingUsersPostsWithImage()
       })
       .catch(error => {
-          // handle error
+
           console.log(error);
           //alert('Error occured please try again!');
        });
@@ -73,7 +68,7 @@ getFollowingUsersPostsWithImage(){
     Axios.get('/users/' + post.userId + '/posts/' + post.postId + '/picture', {
     method: 'GET',
     responseType: 'blob' }).then(res => {
-            // handle success
+
             const file = new Blob([res.data]);
             const fileURL = URL.createObjectURL(file);
 
@@ -82,7 +77,7 @@ getFollowingUsersPostsWithImage(){
             }
         })
         .catch(error => {
-            // handle error
+
             console.log(error);
             //alert('Error occured please try again!');
          });

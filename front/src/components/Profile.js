@@ -42,12 +42,12 @@ getLoggedInUser(){
 getLoggedInUsersPosts() {
     Axios.get('/users/' + this.state.loggedInUser.id + '/posts')
         .then(res => {
-            // handle success
+
             this.setState({posts: res.data});
             this.getPostImages()
         })
         .catch(error => {
-            // handle error
+
             console.log(error);
             //alert('Error occured please try again!');
          });
@@ -59,7 +59,7 @@ getPostImages(){
     Axios.get('/users/' + this.state.loggedInUser.id + '/posts/' + post.id + '/picture', {
     method: 'GET',
     responseType: 'blob' }).then(res => {
-            // handle success
+
             const file = new Blob([res.data]);
             const fileURL = URL.createObjectURL(file);
  
@@ -67,7 +67,7 @@ getPostImages(){
             this.setState({postsWithImage: this.state.postsWithImage.concat({postId:post.id, imgUrl:fileURL})});
         })
         .catch(error => {
-            // handle error
+
             console.log(error);
             //alert('Error occured please try again!');
          });
@@ -80,7 +80,7 @@ getProfilePicture(){
   Axios.get('/users/' + this.state.loggedInUser.id + '/picture', {
   method: 'GET',
   responseType: 'blob' }).then(res => {
-          // handle success
+
           const file = new Blob([res.data]);
           const fileURL = URL.createObjectURL(file);
 
@@ -88,7 +88,7 @@ getProfilePicture(){
           
       })
       .catch(error => {
-          // handle error
+
           console.log(error);
           //alert('Error occured please try again!');
        });
@@ -104,10 +104,10 @@ goToPostImage(postId) {
     return( 
     <div>  
       <div className="container">
-        <div className="row bla">
+        <div className="row">
         <div className="col s2"></div>
           <div className="col s3">
-            <Link to="/uploadprofilepicture"><img className="profilePictureAvatar" src={profilePicture}/></Link>
+            <Link to="/uploadprofilepicture"><img className="profilePictureAvatar" src={profilePicture} alt={this.state.username}/></Link>
           </div>
           <div className="col s5 profileInfo">
           <h3>{this.state.username}
@@ -120,7 +120,6 @@ goToPostImage(postId) {
           </div>
           <div>
           <h6>Fuck you! Pobedicemo!</h6>
-          {console.log(this.state.postsWithImage)}
           </div>
           </div>
           <div className="col s2"></div>

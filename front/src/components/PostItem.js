@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from '../apis/Axios';
 import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import noImage from "../resources/noImage.jpg"
 
 class PostItem extends React.Component {
@@ -16,6 +17,7 @@ class PostItem extends React.Component {
       profileImageUrl:null
 
     };
+    this.goToOtherUserProfile = this.goToOtherUserProfile.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +43,7 @@ getProfilePicture(){
   Axios.get('/users/' + this.state.userId + '/picture', {
   method: 'GET',
   responseType: 'blob' }).then(res => {
-          // handle success
+
           const file = new Blob([res.data]);
           const fileURL = URL.createObjectURL(file);
 
@@ -49,7 +51,7 @@ getProfilePicture(){
   
       })
       .catch(error => {
-          // handle error
+
           console.log(error);
           //alert('Error occured please try again!');
        });
@@ -65,7 +67,10 @@ getPost(){
       })
 }
 
-
+goToOtherUserProfile(userId) {
+  console.log()
+  this.props.history.push("/users/" + userId);
+}
 
 
   render() {
@@ -74,12 +79,13 @@ getPost(){
     <div className="post">
         <div className="card post-card">
             <h5 className="postHeader">
-            <Link to="/userprofile" className="btn-floating blue accent-1 white-text profile-icon otherUserProfileIcon" title={this.state.user.username + " profile"}>
-              <img className="otherUserProfileImage" src={profilePicture}></img>
+            <Link to={"/users/" + this.state.userId} className="btn-floating blue accent-1 white-text profile-icon otherUserProfileIcon" title={this.state.user.username + " profile"}
+            onClick={() => this.goToOtherUserProfile(this.state.user.id)}>
+              <img className="otherUserProfileImage" src={profilePicture} alt={this.state.user.username}></img>
             </Link>
             {this.state.user.username}</h5>
             <div className="card-image">
-                <img src={this.props.image}/>
+                <img src={this.props.image} alt={this.state.user.username}/>
             </div>
             
             <h6 style={{"verticalAlign":"center"}}><i className="small material-icons" style={{"color":"red"}}>favorite</i>569 Likes</h6>
@@ -94,4 +100,4 @@ getPost(){
   }
 }
 
-export default PostItem;
+export default withRouter(PostItem);
