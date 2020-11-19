@@ -157,3 +157,10 @@ input:focus {
   cursor: pointer;
 }
 
+/*Page Not Found Component*/
+
+.errorTxt{
+  font-size:5rem;
+  font-weight: 700;
+}
+
