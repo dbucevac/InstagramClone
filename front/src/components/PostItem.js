@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from '../apis/Axios';
 import {Link} from 'react-router-dom';
+import noImage from "../resources/noImage.jpg"
 
 class PostItem extends React.Component {
 
@@ -68,7 +69,7 @@ getPost(){
 
 
   render() {
-    let profilePicture = this.state.profileImageUrl===null?"https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=715&q=80":this.state.profileImageUrl;
+    let profilePicture = this.state.profileImageUrl===null?noImage:this.state.profileImageUrl;
     return (
     <div className="post">
         <div className="card post-card">
