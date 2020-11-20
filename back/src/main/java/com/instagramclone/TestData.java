@@ -65,13 +65,14 @@ public class TestData {
 		
 		User user2 = new User();
 		user2.setEmail("milica.radic@gmail.com");
-		user2.setUsername("micaRad");
+		user2.setUsername("mica");
 		String encodedPass3 = passwordEncoder.encode("nekaSifra789!");
 		user2.setPassword(encodedPass3);
 		user2.setRole(UserRole.USER);
 		user2.setDescription("No filter");
 		userRepository.save(user2);
 		
+		/*
 		
 		List<User> followingUsers1 = new ArrayList<User>();
 		followingUsers1.add(user0);
@@ -134,7 +135,7 @@ public class TestData {
 		commentRepository.save(comment2);
 		
 		
-		
+		*/
 	}
 
 }

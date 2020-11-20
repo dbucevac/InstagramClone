@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from '../apis/Axios';
+import {Link} from 'react-router-dom';
 import noImage from "../resources/noImage.jpg";
 
 class OtherUserProfile extends React.Component {
@@ -16,7 +17,9 @@ class OtherUserProfile extends React.Component {
       profileImageUrl:null,
       images:[],
       postsWithImage:[],
-      followedByLoggedInUser: false
+      followedByLoggedInUser: false,
+      followings: 0,
+      followers: 0
     };
   }
 
@@ -34,7 +37,8 @@ getUser(){
             this.setState({user: res.data});
             this.getUsersPosts();
             this.getProfilePicture()
-            
+            this.getFollowings()
+            this.getFollowers()
         })
         .catch(error => {
             console.log(error)
@@ -131,16 +135,39 @@ followUnfollow(){
   Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.user.id)
   .then(
     this.setState({followedByLoggedInUser: !this.state.followedByLoggedInUser})
+    
   )
   .catch(error => {
     console.log(error)
 })
+
 }
 
+getFollowings(){
+  Axios.get('/users/'+this.state.user.id + '/followings')
+      .then(res => {
+          var data = res.data;
+          var numFollowings = data.length
+          this.setState({followings: numFollowings})
+          
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
 
-
-
-
+getFollowers(){
+  Axios.get('/users/'+this.state.user.id + '/followers')
+      .then(res => {
+          var data = res.data;
+          var numFollowers = data.length
+          this.setState({followers: numFollowers})
+          
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
 
 goToPostImage(postId) {
     this.props.history.push("/posts/" + postId);
@@ -165,18 +192,17 @@ goToPostImage(postId) {
               </h3>
               <div className="profileStatistics">
                 <h6>{this.state.posts.length} posts</h6>
-                <h6>500 followers</h6>
-                <h6>10 following</h6>
+                <Link to={this.state.userId+"/followers"}><h6>{this.state.followers} followers</h6></Link>
+                <Link to={this.state.userId +"/following"}><h6>{this.state.followings} following</h6></Link>
               </div>
               <div>
-              <h6>Fuck you! Pobedicemo!</h6>
+              <h6>{this.state.user.description}</h6>
               </div>
               </div>
               <div className="col s2"></div>
             </div>
           </div>
           <div className="gallery">
-          {console.log(this.state.followedByLoggedInUser)}
             {this.state.postsWithImage.map(post=>(
               <img key={post.postId} src={post.imgUrl} className="galleryItem" alt={this.state.user.username + " picture"} onClick={() => this.goToPostImage(post.postId)}/>
             ))}

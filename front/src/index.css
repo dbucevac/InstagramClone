@@ -168,3 +168,35 @@ input:focus {
   font-weight: 700;
 }
 
+/*Following & Followers list*/
+
+.followList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 5rem;
+}
+
+.followItem {
+  width: 20%;
+  max-height: 20rem;
+  margin: 1rem;
+}
+
+.followItem img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.followButton{
+  display: flex;
+  justify-content: center;
+}
+
+.followButton button{
+  margin:0 auto!important;
+}
+

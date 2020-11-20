@@ -10,6 +10,8 @@ import Profile from './components/Profile';
 import OtherUserProfile from './components/OtherUserProfile'
 import Account from './components/Account';
 import Post from './components/Post';
+import Followers from './components/Followers'
+import Followings from './components/Followings'
 import {
   Route,
   Link,
@@ -71,6 +73,12 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/users/:id" render={(props) => (
                   <OtherUserProfile {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/users/:id/followers" render={(props) => (
+                  <Followers {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/users/:id/following" render={(props) => (
+                  <Followings {...props} username={username} />)}>
                 </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>
