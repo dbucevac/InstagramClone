@@ -160,7 +160,7 @@ goToOtherUserProfile(userId) {
             
             <h6 style={{"verticalAlign":"center", "display": "flex", "marginLeft": ".5rem"}}><i className="small material-icons" style={{"color":liked, "cursor":"pointer"}} onClick={() => {this.likeUnlike()}}>favorite</i><span style={{"marginTop": ".4rem", "marginLeft": ".4rem"}}>{likes}</span></h6>
             <h6 className="postCaption">{this.state.post.caption}</h6>
-            <h6>messages</h6>
+            <h6>Comments</h6>
             <ul>
                 <li>Provera</li>
             </ul>
