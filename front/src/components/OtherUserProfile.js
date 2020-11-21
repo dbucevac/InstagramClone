@@ -133,10 +133,17 @@ getProfilePicture(){
 
 followUnfollow(){
   Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.user.id)
-  .then(
+  .then(res =>{
+
     this.setState({followedByLoggedInUser: !this.state.followedByLoggedInUser})
-    
-  )
+
+    if(this.state.followedByLoggedInUser){
+      this.setState(prevState =>({followers: prevState.followers +1}))
+    }else{
+      this.setState(prevState =>({followers: prevState.followers -1}))
+    }  
+
+  })
   .catch(error => {
     console.log(error)
 })
