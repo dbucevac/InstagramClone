@@ -169,7 +169,7 @@ getCommentsWithUsers(){
 }
 
 displayCommentSection(){
-  if(this.state.comments.length>0){
+  if(this.state.commentsWithUsers.length>0){
     this.setState({commentSectionDisplayed: !this.state.commentSectionDisplayed})
   }
   
@@ -192,8 +192,8 @@ sendComment(e){
   var message = {message: txt};
   Axios.post('/users/' + +this.state.loggedInUserId + '/posts/' + this.state.postId + '/comments', message)
   .then(res =>{
-    this.setState({comments:this.state.comments.concat(res.data)})
-
+    this.setState({commentsWithUsers:this.state.commentsWithUsers.concat({commentId:res.data.id, userId:this.state.loggedInUserId})})
+    this.setState({comment: ''})
   })
   .catch(error=>{
     console.log(error)
@@ -227,7 +227,7 @@ sendComment(e){
               <form class="col s12" style={{"display":"flex"}} onSubmit={(e)=>{this.sendComment(e)}}>
                   <textarea className="browser-default" style={{"width":"100%", "border": "1px solid lightGrey", "padding": ".5rem .5rem"}} 
                   name="comment" placeholder="Write a comment" 
-                  onChange={(e) => {this.valueInputChange(e);}}></textarea>
+                  onChange={(e) => {this.valueInputChange(e);}} value={this.state.comment}></textarea>
                   <input type="submit" value="Send" style={{"cursor":"pointer"}}></input>
                   {/*<i className="small material-icons" style={{"cursor":"pointer", "marginTop":".5rem"}} title="Send" onClick={()=>{this.sendComment()}}>send</i>*/}
               </form>
