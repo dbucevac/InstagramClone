@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from '../apis/Axios';
 import {Link} from 'react-router-dom';
 import noImage from "../resources/noImage.jpg";
+import CommentItem from './CommentItem';
 
 class Post extends React.Component {
 
@@ -18,7 +19,11 @@ class Post extends React.Component {
       postImageUrl:null,
       likedByLoggedInUser: false,
       likes: [],
-      numLikes: 0
+      numLikes: 0,
+      comments:[],
+      commentsWithUsers:[],
+      commentSectionDisplayed:false,
+      comment:''
     };
 
   }
@@ -47,8 +52,7 @@ getLoggedInUser(){
   Axios.get('/users/?username='+this.state.loggedInUsername)
       .then(res => {
           this.setState({loggedInUser: res.data[0]});
-          console.log(res.data)
-          this.getLikeList()
+          
       })
       .catch(error => {
           console.log(error)
@@ -82,6 +86,7 @@ getUsersPost() {
             this.getPostImage()
             this.getLikeList()
             this.getNumberOfLikes()
+            this.getComments()
         })
         .catch(error => {
 
@@ -170,6 +175,66 @@ likeUnlike(){
 
 }
 
+getComments() {
+  Axios.get('/users/' + +this.state.user.id + '/posts/' + this.state.postId + '/comments')
+      .then(res => {
+
+          this.setState({comments: res.data});
+          this.getCommentsWithUsers()
+      })
+      .catch(error => {
+
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
+}
+
+getCommentsWithUsers(){
+  this.state.comments.map(comment =>{
+  Axios.get('/users/comment/' + comment.id)
+      .then(res => {
+        
+          this.setState({commentsWithUsers: this.state.commentsWithUsers.concat({commentId:comment.id, userId:res.data.id})});
+      })
+      .catch(error => {
+
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
+  })
+}
+
+displayCommentSection(){
+  if(this.state.commentsWithUsers.length>0){
+    this.setState({commentSectionDisplayed: !this.state.commentSectionDisplayed})
+  }
+  
+}
+
+valueInputChange(event) {
+  let control = event.target;
+
+  let name = control.name;
+  let value = control.value;
+
+  let change = {};
+  change[name] = value;
+  this.setState(change);
+}
+
+sendComment(e){
+  e.preventDefault();
+  var txt = this.state.comment;
+  var message = {message: txt};
+  Axios.post('/users/' + +this.state.loggedInUser.id + '/posts/' + this.state.postId + '/comments', message)
+  .then(res =>{
+    this.setState({commentsWithUsers:this.state.commentsWithUsers.concat({commentId:res.data.id, userId:this.state.loggedInUser.id})})
+    this.setState({comment: ''})
+  })
+  .catch(error=>{
+    console.log(error)
+  })
+}
 
 
   render() {
@@ -177,6 +242,8 @@ likeUnlike(){
     let profileLink = this.state.loggedInUsername===this.state.user.username?"/profile":"/users/"+this.state.user.id
     let liked = this.state.likedByLoggedInUser?"red":"lightGrey";
     let likes = this.state.numLikes > 0? this.state.numLikes + " Likes": " Likes"
+    let commentSectionDisplayed = this.state.commentSectionDisplayed?"block":"none";
+    let commentLabelDisplayed = this.state.commentSectionDisplayed?"Hide comments":"Comments";
     if(this.state.post.id !== undefined){
       return (    
         <div className="post">
@@ -192,9 +259,22 @@ likeUnlike(){
                 </div> 
                 <h6 style={{"verticalAlign":"center", "display": "flex", "marginLeft": ".5rem"}}><i className="small material-icons" style={{"color":liked, "cursor":"pointer"}} onClick={() => {this.likeUnlike()}}>favorite</i><span style={{"marginTop": ".4rem", "marginLeft": ".4rem"}}>{likes}</span></h6>
                 <h6 className="postCaption">{this.state.post.caption}</h6>
-                <h6 style={{"marginLeft": ".5rem", "color": "grey"}}>Comments</h6>
-                <ul style={{"display": "none"}}>
-                    <li>Provera</li>
+                <h6 style={{"marginLeft": ".5rem", "color": "grey", "cursor":"pointer"}} onClick={()=>{this.displayCommentSection()}}>{commentLabelDisplayed}</h6>
+                
+                <div class="row" style={{"marginTop":"1rem"}}>
+                  <form class="col s12" style={{"display":"flex", "padding":"0 0"}} onSubmit={(e)=>{this.sendComment(e)}}>
+                      <textarea className="browser-default" style={{"width":"100%", "border": "1px solid lightGrey", "padding": ".5rem .5rem"}} 
+                      name="comment" placeholder="Write a comment" 
+                      onChange={(e) => {this.valueInputChange(e);}} value={this.state.comment}></textarea>
+                      <input type="submit" value="Send" style={{"cursor":"pointer"}}></input>
+                  </form>
+                </div>
+                
+                <ul style={{"display":commentSectionDisplayed}} >
+                  {this.state.commentsWithUsers.map(item => (
+                        <li><CommentItem key={item.commentId} userId={item.userId} commentId={item.commentId} loggedinUserId={this.state.loggedInUser.id} postId={this.state.post.id}
+                        /></li>
+                    ))}
                 </ul>
             </div>
         </div>

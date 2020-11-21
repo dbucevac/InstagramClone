@@ -229,7 +229,6 @@ sendComment(e){
                   name="comment" placeholder="Write a comment" 
                   onChange={(e) => {this.valueInputChange(e);}} value={this.state.comment}></textarea>
                   <input type="submit" value="Send" style={{"cursor":"pointer"}}></input>
-                  {/*<i className="small material-icons" style={{"cursor":"pointer", "marginTop":".5rem"}} title="Send" onClick={()=>{this.sendComment()}}>send</i>*/}
               </form>
             </div>
 
