@@ -142,6 +142,19 @@ public class ApiUserController {
 		}
 	}
 	
+	@GetMapping("/comment/{commentId}")
+	public ResponseEntity<UserDTO> getUserByComment(@PathVariable Long commentId){
+		Optional<User> user = userService.byComment(commentId);
+		
+		if(user.isPresent()) {
+			UserDTO body = toUserDto.convert(user.get());
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	
 	@GetMapping
 	ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required=false) String username){

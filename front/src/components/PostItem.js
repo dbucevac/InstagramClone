@@ -2,7 +2,8 @@ import React from 'react';
 import Axios from '../apis/Axios';
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import noImage from "../resources/noImage.jpg"
+import noImage from "../resources/noImage.jpg";
+import CommentItem from './CommentItem';
 
 class PostItem extends React.Component {
 
@@ -18,10 +19,12 @@ class PostItem extends React.Component {
       profileImageUrl:null,
       likedByLoggedInUser: false,
       likes: [],
-      numLikes: 0
-
+      numLikes: 0,
+      comments:[],
+      commentsWithUsers:[],
+      commentSectionDisplayed:false,
+      comment:''
     };
-    this.goToOtherUserProfile = this.goToOtherUserProfile.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +70,7 @@ getPost(){
           this.setState({post: res.data});
           this.getLikeList()
           this.getNumberOfLikes()
+          this.getComments()
       })
       .catch(error => {
           console.log(error)
@@ -135,22 +139,79 @@ likeUnlike(){
 
 }
 
-goToOtherUserProfile(userId) {
-  console.log()
-  this.props.history.push("/users/" + userId);
+getComments() {
+  Axios.get('/users/' + +this.state.userId + '/posts/' + this.state.postId + '/comments')
+      .then(res => {
+
+          this.setState({comments: res.data});
+          this.getCommentsWithUsers()
+      })
+      .catch(error => {
+
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
 }
 
+getCommentsWithUsers(){
+  this.state.comments.map(comment =>{
+  Axios.get('/users/comment/' + comment.id)
+      .then(res => {
+        
+          this.setState({commentsWithUsers: this.state.commentsWithUsers.concat({commentId:comment.id, userId:res.data.id})});
+      })
+      .catch(error => {
+
+          console.log(error);
+          //alert('Error occured please try again!');
+       });
+  })
+}
+
+displayCommentSection(){
+  if(this.state.commentsWithUsers.length>0){
+    this.setState({commentSectionDisplayed: !this.state.commentSectionDisplayed})
+  }
+  
+}
+
+valueInputChange(event) {
+  let control = event.target;
+
+  let name = control.name;
+  let value = control.value;
+
+  let change = {};
+  change[name] = value;
+  this.setState(change);
+}
+
+sendComment(e){
+  e.preventDefault();
+  var txt = this.state.comment;
+  var message = {message: txt};
+  Axios.post('/users/' + +this.state.loggedInUserId + '/posts/' + this.state.postId + '/comments', message)
+  .then(res =>{
+    this.setState({commentsWithUsers:this.state.commentsWithUsers.concat({commentId:res.data.id, userId:this.state.loggedInUserId})})
+    this.setState({comment: ''})
+  })
+  .catch(error=>{
+    console.log(error)
+  })
+}
 
   render() {
     let profilePicture = this.state.profileImageUrl===null?noImage:this.state.profileImageUrl;
     let liked = this.state.likedByLoggedInUser?"red":"lightGrey";
-    let likes = this.state.numLikes > 0? this.state.numLikes + " Likes": " Likes"
+    let likes = this.state.numLikes > 0? this.state.numLikes + " Likes": " Likes";
+    let commentSectionDisplayed = this.state.commentSectionDisplayed?"block":"none";
+    let commentLabelDisplayed = this.state.commentSectionDisplayed?"Hide comments":"Comments";
     return (
     <div className="post">
         <div className="card post-card">
             <h5 className="postHeader">
             <Link to={"/users/" + this.state.userId} className="btn-floating blue accent-1 white-text profile-icon otherUserProfileIcon" title={this.state.user.username + " profile"}
-            onClick={() => this.goToOtherUserProfile(this.state.user.id)}>
+            >
               <img className="otherUserProfileImage" src={profilePicture} alt={this.state.user.username}></img>
             </Link>
             {this.state.user.username}</h5>
@@ -160,9 +221,22 @@ goToOtherUserProfile(userId) {
             
             <h6 style={{"verticalAlign":"center", "display": "flex", "marginLeft": ".5rem"}}><i className="small material-icons" style={{"color":liked, "cursor":"pointer"}} onClick={() => {this.likeUnlike()}}>favorite</i><span style={{"marginTop": ".4rem", "marginLeft": ".4rem"}}>{likes}</span></h6>
             <h6 className="postCaption">{this.state.post.caption}</h6>
-            <h6>Comments</h6>
-            <ul>
-                <li>Provera</li>
+            <h6 style={{"marginLeft": ".5rem", "color": "grey", "cursor":"pointer"}} onClick={()=>{this.displayCommentSection()}}>{commentLabelDisplayed}</h6>
+            
+            <div class="row" style={{"marginTop":"1rem"}}>
+              <form class="col s12" style={{"display":"flex"}} onSubmit={(e)=>{this.sendComment(e)}}>
+                  <textarea className="browser-default" style={{"width":"100%", "border": "1px solid lightGrey", "padding": ".5rem .5rem"}} 
+                  name="comment" placeholder="Write a comment" 
+                  onChange={(e) => {this.valueInputChange(e);}} value={this.state.comment}></textarea>
+                  <input type="submit" value="Send" style={{"cursor":"pointer"}}></input>
+              </form>
+            </div>
+
+            <ul style={{"display":commentSectionDisplayed}} >
+            {this.state.commentsWithUsers.map(item => (
+                  <li><CommentItem key={item.commentId} userId={item.userId} commentId={item.commentId} loggedinUserId={this.state.loggedInUserId} postId={this.state.post.id}
+                  /></li>
+              ))}
             </ul>
         </div>
     </div>
