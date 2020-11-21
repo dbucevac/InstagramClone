@@ -1,5 +1,7 @@
 import React from 'react';
 import Axios from '../apis/Axios';
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 class UploadFile extends React.Component {
 
@@ -13,6 +15,7 @@ class UploadFile extends React.Component {
         caption:"",
         errors:{file:''}
         };
+        toast.configure()
     }
 
     componentDidMount() {
@@ -94,8 +97,11 @@ class UploadFile extends React.Component {
         var userId = this.state.loggedInUser.id;
             
         Axios.post("/users/" + userId + "/posts", file);
-        this.props.history.push('/')
-        alert("Your picture is posted!")
+        toast.success('Your picture is posted!', {position: toast.POSITION.TOP_CENTER})
+        setTimeout(()=>{
+            this.props.history.push('/')
+        },2000)
+        
 
         }
 

@@ -1,12 +1,15 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {signup} from '../../services/register';
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 class Signup extends React.Component{
     constructor(){
         super();
 
         this.state = { fields:{username: "", email: "", password: "", passwordConfirm: ""}, errors:{username:'', email:'', password:'', passwordConfirm:'', match:''}};
+        toast.configure()
     }
 
     handleChange(field, e){         
@@ -90,8 +93,11 @@ class Signup extends React.Component{
         e.preventDefault();
         if(this.handleValidation()){
             signup(this.state.fields.username, this.state.fields.email, this.state.fields.password, this.state.fields.passwordConfirm);
-            this.props.history.push("/login");
-            alert("You've been successfully registered!You can log into your account")
+            toast.success("You've been successfully registered!You can log into your account", {position: toast.POSITION.TOP_CENTER})
+            setTimeout(()=>{
+                this.props.history.push("/login");
+            },2000)
+            
          }
     }
 

@@ -119,6 +119,7 @@ class Account extends React.Component{
             toast.success('Account information successfully modified!', {position: toast.POSITION.TOP_CENTER})
 
             if(this.state.fields.username !== this.props.username){
+                toast.warn('Modification of username demands reverification of your account through sign in', {position: toast.POSITION.TOP_CENTER})
                 setTimeout(()=>{
                     window.localStorage.removeItem("token");
                     window.location.reload();
@@ -161,7 +162,6 @@ class Account extends React.Component{
                         placeholder="username"
                         onChange={(e) => {
                         this.handleChange("username", e);}}
-                        onFocus={()=>{toast.warn('Modification of username demands reverification of your account through sign in', {position: toast.POSITION.TOP_CENTER})}}
                         value={this.state.fields.username}></input>
                         <p style={{color: "red"}}>{this.state.errors["username"]}</p>
 
