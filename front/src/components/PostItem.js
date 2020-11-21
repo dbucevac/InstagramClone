@@ -10,11 +10,15 @@ class PostItem extends React.Component {
     super(props);
 
     this.state = { 
+      loggedInUserId: this.props.loggedinUserId,
       userId: this.props.userId,
       postId: this.props.postId,
       user: {},
       post:{},
-      profileImageUrl:null
+      profileImageUrl:null,
+      likedByLoggedInUser: false,
+      likes: [],
+      numLikes: 0
 
     };
     this.goToOtherUserProfile = this.goToOtherUserProfile.bind(this);
@@ -61,10 +65,74 @@ getPost(){
   Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId)
       .then(res => {
           this.setState({post: res.data});
+          this.getLikeList()
+          this.getNumberOfLikes()
       })
       .catch(error => {
           console.log(error)
       })
+}
+
+getLikeList(){
+  Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId + '/likes')
+      .then(res => {
+          
+        this.setState({likes:res.data})
+        this.getStatusOfLiking()
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
+
+getStatusOfLiking(){
+
+  this.state.likes.map(like =>{
+    Axios.get('/users/like/' + like.id)
+    .then(res => {
+
+            if (this.state.loggedInUserId === res.data.id) {
+            this.setState({likedByLoggedInUser: true})
+            }
+        })
+        .catch(error => {
+
+            console.log(error);
+            //alert('Error occured please try again!');
+         });
+
+  })
+}
+
+getNumberOfLikes(){
+  Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId + '/likes')
+      .then(res => {
+          var data = res.data;
+          var numLikes = data.length
+          this.setState({numLikes: numLikes});
+      })
+      .catch(error => {
+          console.log(error)
+      })
+}
+
+likeUnlike(){
+
+    Axios.post('/users/' + this.state.loggedInUserId + '/posts/' + this.state.postId + '/likes')
+    .then(res =>{
+
+      this.setState({likedByLoggedInUser: !this.state.likedByLoggedInUser})
+      if(this.state.likedByLoggedInUser){
+        this.setState(prevState =>({numLikes: prevState.numLikes +1}))
+      }else{
+        this.setState(prevState =>({numLikes: prevState.numLikes -1}))
+      }         
+
+    })
+    .catch(error => {
+      console.log(error)
+  })
+
 }
 
 goToOtherUserProfile(userId) {
@@ -75,6 +143,8 @@ goToOtherUserProfile(userId) {
 
   render() {
     let profilePicture = this.state.profileImageUrl===null?noImage:this.state.profileImageUrl;
+    let liked = this.state.likedByLoggedInUser?"red":"lightGrey";
+    let likes = this.state.numLikes > 0? this.state.numLikes + " Likes": " Likes"
     return (
     <div className="post">
         <div className="card post-card">
@@ -88,7 +158,7 @@ goToOtherUserProfile(userId) {
                 <img src={this.props.image} alt={this.state.user.username}/>
             </div>
             
-            <h6 style={{"verticalAlign":"center"}}><i className="small material-icons" style={{"color":"red"}}>favorite</i>569 Likes</h6>
+            <h6 style={{"verticalAlign":"center", "display": "flex", "marginLeft": ".5rem"}}><i className="small material-icons" style={{"color":liked, "cursor":"pointer"}} onClick={() => {this.likeUnlike()}}>favorite</i><span style={{"marginTop": ".4rem", "marginLeft": ".4rem"}}>{likes}</span></h6>
             <h6 className="postCaption">{this.state.post.caption}</h6>
             <h6>messages</h6>
             <ul>

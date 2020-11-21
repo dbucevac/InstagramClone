@@ -22,6 +22,7 @@ import com.instagramclone.dto.CommentDTO;
 import com.instagramclone.dto.LikeDTO;
 import com.instagramclone.dto.PictureDTO;
 import com.instagramclone.dto.PostDTO;
+import com.instagramclone.dto.UserDTO;
 import com.instagramclone.model.Comment;
 import com.instagramclone.model.Like;
 import com.instagramclone.model.Picture;
@@ -206,7 +207,8 @@ public class ApiPostController {
 		Optional<Like> existingLike = likeService.byPostIdAndUserId(postToUpdate.getId(), userToUpdate.getId());
 		
 		if(existingLike.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			likeService.delete(existingLike.get().getId());
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
 		Like like = new Like();

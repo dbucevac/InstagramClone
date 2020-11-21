@@ -104,7 +104,7 @@ getFollowingUsersPostsWithImage(){
         <div className="row">
           <div className="col s12">  
          {this.state.postsOfFollowingUsersWithImage.map(post => (
-                  <PostItem key={post.postId} userId={post.userId} postId={post.postId} image={post.imgUrl}
+                  <PostItem key={post.postId} userId={post.userId} postId={post.postId} image={post.imgUrl} loggedinUserId={this.state.loggedInUser.id}
                   />
               ))}
           </div>

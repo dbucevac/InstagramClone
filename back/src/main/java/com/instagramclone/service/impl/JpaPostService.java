@@ -71,6 +71,7 @@ public class JpaPostService implements PostService{
 		return allPosts;
 	}
 
+
 	
 	
 

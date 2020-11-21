@@ -110,6 +110,12 @@ public class JpaUserService implements UserService{
 		return userRepository.findByPostsId(postId);
 	}
 
+	@Override
+	public Optional<User> byLike(Long likeId) {
+		// TODO Auto-generated method stub
+		return userRepository.findByLikesId(likeId);
+	}
+
 	
 	
 	

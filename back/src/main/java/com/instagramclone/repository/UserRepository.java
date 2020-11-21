@@ -26,5 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	Optional<User> findByPostsId(Long postId);
 	
+	Optional<User> findByLikesId(Long likeId);
+	
 	
 }

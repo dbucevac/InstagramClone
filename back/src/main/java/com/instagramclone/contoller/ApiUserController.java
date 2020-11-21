@@ -129,6 +129,19 @@ public class ApiUserController {
 		}
 	}
 	
+	@GetMapping("/like/{likeId}")
+	public ResponseEntity<UserDTO> getUserByLike(@PathVariable Long likeId){
+		Optional<User> user = userService.byLike(likeId);
+		
+		if(user.isPresent()) {
+			UserDTO body = toUserDto.convert(user.get());
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	
 	@GetMapping
 	ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required=false) String username){
