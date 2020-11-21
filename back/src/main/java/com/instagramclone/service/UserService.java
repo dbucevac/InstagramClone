@@ -17,6 +17,7 @@ public interface UserService {
 	Optional<User> byEmail(String email);
 	Optional<User> byPost(Long postId);
 	Optional<User> byLike(Long likeId);
+	Optional<User> byComment(Long commentId);
 	boolean changePassword(Long id, PasswordChangeDTO changeDto);
 	List<User> searchUsers(@Param("username") String username);
 	List<User> findFollowingUsersByUserId(@Param("userId") Long userId);

@@ -224,30 +224,6 @@ public class ApiPostController {
 	}
 	
 	
-	
-	@DeleteMapping("/{id}/likes/{likeId}")
-	public ResponseEntity<LikeDTO> unlike(
-			@PathVariable Long userId,
-			@PathVariable Long id,
-			@PathVariable Long likeId){
-		
-		Optional<User> user = userService.one(userId);
-		Optional<Post> post = postService.one(id);
-		if(!user.isPresent()||!post.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		Optional<Like> likeForDeletion = likeService.byPostIdAndUserId(id, userId);
-		
-		if(likeForDeletion.get().getId().equals(likeId)) {
-			likeService.delete(likeId);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} 
-
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-	
-	
 	@GetMapping("/{id}/comments")
 	public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable Long id, @PathVariable Long userId){
 		Optional<Post> post = postService.one(id);
@@ -261,6 +237,20 @@ public class ApiPostController {
 			List<Comment> commentList = commentService.byPostId(id);
 			List<CommentDTO> commentDTOList = toCommentDto.convert(commentList);
 			return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/{id}/comments/{commentId}")
+	public ResponseEntity<CommentDTO> getPostCommentById(@PathVariable Long id, @PathVariable Long userId, @PathVariable Long commentId){
+		Optional<Comment> comment = commentService.one(commentId);
+		
+		if(comment.isPresent()) {
+			
+			CommentDTO body = toCommentDto.convert(comment.get());
+			return new ResponseEntity<>(body, HttpStatus.OK);
 		}
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
