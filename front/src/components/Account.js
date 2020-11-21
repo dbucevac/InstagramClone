@@ -119,11 +119,30 @@ class Account extends React.Component{
             toast.success('Account information successfully modified!', {position: toast.POSITION.TOP_CENTER})
 
             if(this.state.fields.username !== this.props.username){
-              window.localStorage.removeItem("token");
-              window.location.reload();
+                setTimeout(()=>{
+                    window.localStorage.removeItem("token");
+                    window.location.reload();
+                },2000)
+            }else{
+                setTimeout(()=>{
+                    this.props.history.push("/profile");
+                },2000)
             }
+
+            
+            
          }
          
+    }
+
+    deleteAccount(e){
+
+            Axios.delete("/users/"+this.state.fields.id)
+            toast.success('Account deleted!', {position: toast.POSITION.TOP_CENTER})
+            setTimeout(()=>{
+                window.localStorage.removeItem("token");
+                window.location.reload();
+            },2000)   
     }
 
     render(){
@@ -134,7 +153,7 @@ class Account extends React.Component{
                 <div className="col s12 m6">
                 <div className="card white">
                     <div className="card-content center black-text">
-                    <h5>Modify your account information</h5>
+                    <h5>Edit account information</h5>
                     <form style={{"width":"80%", "margin":"auto", "marginTop": "2.5rem"}}>
                         <input className="inputBtn" 
                         type="text" 
@@ -168,6 +187,8 @@ class Account extends React.Component{
                     </form>
                         <div className="span-login">
                             <span>Need to change your password? Click <Link to="/password-change" className="login-link"> here</Link></span>
+                            <button className="btn-small red darken-2 sbmtBtn" 
+                        onClick={(e) => {this.deleteAccount(e)}} style={{"width":"80%", "marginTop": "2rem"}}>Delete account</button>
                         </div>
                     </div>
                 </div>
