@@ -113,7 +113,7 @@ getFollowingUsersPostsWithImage(){
       )
     }else{
       return(
-        <div class="valign-wrapper" style={{"width":"100%", "height":"50%", "position": "absolute"}}>
+        <div className="valign-wrapper" style={{"width":"100%", "height":"50%", "position": "absolute"}}>
         <div className="valign" style={{"width":"100%"}}>
         <div className="container">
         <div className="row">
