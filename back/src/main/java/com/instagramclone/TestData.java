@@ -80,60 +80,6 @@ public class TestData {
 		user2.setFollowingUsers(followingUsers1);
 		userRepository.save(user2);
 		
-		//Posts
-		
-		Post post1 = new Post();
-		post1.setCaption("New Horizont");
-		post1.setUser(user0);
-		postRepository.save(post1);
-		
-		Post post2 = new Post();
-		post2.setCaption("Party party party!");
-		post2.setUser(user1);
-		postRepository.save(post2);
-		
-		Post post3 = new Post();
-		post3.setCaption("Loveee");
-		post3.setUser(user2);
-		postRepository.save(post3);
-		
-		Post post4 = new Post();
-		post4.setCaption("Happy Birthday");
-		post4.setUser(user2);
-		postRepository.save(post4);
-		
-		Post post5 = new Post();
-		post5.setCaption(":)))))");
-		post5.setUser(user1);
-		postRepository.save(post5);
-		
-		
-		Like like1 = new Like();
-		like1.setPost(post1);
-		like1.setUser(user2);
-		likeRepository.save(like1);
-		
-		Like like2 = new Like();
-		like2.setPost(post2);
-		like2.setUser(user2);
-		likeRepository.save(like2);
-		
-		//Comments
-		
-		Comment comment1 = new Comment();
-		
-		comment1.setMessage("Wooow!");
-		comment1.setPost(post1);
-		comment1.setUser(user2);
-		commentRepository.save(comment1);
-		
-		Comment comment2 = new Comment();
-		
-		comment2.setMessage("Congratulation!");
-		comment2.setPost(post2);
-		comment2.setUser(user2);
-		commentRepository.save(comment2);
-		
 		
 		*/
 	}
