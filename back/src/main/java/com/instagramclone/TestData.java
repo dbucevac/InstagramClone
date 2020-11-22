@@ -43,7 +43,7 @@ public class TestData {
 	@PostConstruct
 	public void init() throws IOException {
 		
-		//Users
+		//Test Users
 		
 		User user0 = new User();
 		user0.setEmail("nikolaC@gmail.com");
@@ -72,16 +72,6 @@ public class TestData {
 		user2.setDescription("No filter");
 		userRepository.save(user2);
 		
-		/*
-		
-		List<User> followingUsers1 = new ArrayList<User>();
-		followingUsers1.add(user0);
-		followingUsers1.add(user1);
-		user2.setFollowingUsers(followingUsers1);
-		userRepository.save(user2);
-		
-		
-		*/
 	}
 
 }

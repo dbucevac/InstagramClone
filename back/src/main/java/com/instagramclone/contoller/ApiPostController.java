@@ -79,7 +79,7 @@ public class ApiPostController {
 	
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
 
-	
+	//Get one post
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PostDTO> getPost(@PathVariable Long id, @PathVariable Long userId){
@@ -98,6 +98,8 @@ public class ApiPostController {
 		}
 	}
 	
+	//Get all posts of one user
+	
 	@GetMapping
 	public ResponseEntity<List<PostDTO>> getPosts(@PathVariable Long userId){
 		
@@ -105,6 +107,7 @@ public class ApiPostController {
 		return new ResponseEntity<>(toPostDto.convert(posts), HttpStatus.OK);
 	}
 	
+	//Get picture linked to the post
 	
 	@GetMapping("/{id}/picture")
 	public ResponseEntity<byte[]> getPostPicture(@PathVariable Long id, @PathVariable Long userId){
@@ -127,6 +130,7 @@ public class ApiPostController {
 		}
 	}
 	
+	//Publish a post
 	
 	@PostMapping
 	public ResponseEntity<Void> uploadPost(@RequestParam("file") MultipartFile file, @PathVariable Long userId, @RequestParam String caption){
@@ -171,6 +175,8 @@ public class ApiPostController {
 		
 	}
 	
+	//Get likes of a post
+	
 	@GetMapping("/{id}/likes")
 	public ResponseEntity<List<LikeDTO>> getPostLikes(@PathVariable Long id, @PathVariable Long userId){
 		Optional<Post> post = postService.one(id);
@@ -189,6 +195,8 @@ public class ApiPostController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Like a post
 	
 	@PostMapping("/{id}/likes")
 	public ResponseEntity<LikeDTO> like(
@@ -223,6 +231,7 @@ public class ApiPostController {
 		return new ResponseEntity<>(toLikeDto.convert(persisted), HttpStatus.CREATED);
 	}
 	
+	//Get comments of a post
 	
 	@GetMapping("/{id}/comments")
 	public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable Long id, @PathVariable Long userId){
@@ -243,6 +252,8 @@ public class ApiPostController {
 		}
 	}
 	
+	//Get comment by post id
+	
 	@GetMapping("/{id}/comments/{commentId}")
 	public ResponseEntity<CommentDTO> getPostCommentById(@PathVariable Long id, @PathVariable Long userId, @PathVariable Long commentId){
 		Optional<Comment> comment = commentService.one(commentId);
@@ -256,6 +267,8 @@ public class ApiPostController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Publish a comment
 	
 	@PostMapping("/{id}/comments")
 	public ResponseEntity<CommentDTO> comment(

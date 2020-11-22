@@ -91,6 +91,8 @@ public class ApiUserController {
 	
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
 	
+	//Get user by id
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
 		Optional<User> user = userService.one(id);
@@ -103,6 +105,10 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Get user by username
+	
+	
 	@RequestMapping(value="/{username}", method = RequestMethod.GET, params = "username")
 	public ResponseEntity<UserDTO> getUser(@PathVariable String username){
 		Optional<User> user = userService.byUsername(username);
@@ -115,6 +121,8 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Get user by post id
 	
 	@GetMapping("/post/{postId}")
 	public ResponseEntity<UserDTO> getUserByPost(@PathVariable Long postId){
@@ -129,6 +137,8 @@ public class ApiUserController {
 		}
 	}
 	
+	//Get user by like id
+	
 	@GetMapping("/like/{likeId}")
 	public ResponseEntity<UserDTO> getUserByLike(@PathVariable Long likeId){
 		Optional<User> user = userService.byLike(likeId);
@@ -141,6 +151,8 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Get user by comment id
 	
 	@GetMapping("/comment/{commentId}")
 	public ResponseEntity<UserDTO> getUserByComment(@PathVariable Long commentId){
@@ -155,6 +167,7 @@ public class ApiUserController {
 		}
 	}
 	
+	//Get users based on the username input (not mandatory)
 	
 	@GetMapping
 	ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required=false) String username){
@@ -171,6 +184,8 @@ public class ApiUserController {
 		return new ResponseEntity<>(toUserDto.convert(users),HttpStatus.OK);
 	}
 	
+	//Get profile picture of a user
+	
 	@GetMapping("/{id}/picture")
 	public ResponseEntity<byte[]> getProfilePicture(@PathVariable Long id){
 		Optional<Picture> picture = pictureService.byUser(id);
@@ -185,6 +200,7 @@ public class ApiUserController {
 		}
 	}
 	
+	//Set profile picture
 	
 	@PostMapping("/{id}/picture")
 	public ResponseEntity<Void> uploadProfilePicture(@RequestParam("file") MultipartFile file, @PathVariable Long id){
@@ -219,6 +235,8 @@ public class ApiUserController {
 		
 		
 	}
+	
+	//Method allowing a user to follow or unfollow a user
 	
 	@PostMapping("/{id}/follow/{userIdToFollowUnfollow}")
 	public ResponseEntity<UserDTO> followUnfollow(@PathVariable Long id, @PathVariable Long userIdToFollowUnfollow){
@@ -262,6 +280,7 @@ public class ApiUserController {
 		}
 	}
 	
+	//Get all following users
 	
 	@GetMapping("/{id}/followings")
 	public ResponseEntity<List<UserDTO>> getFollowingUsers(@PathVariable Long id){
@@ -277,12 +296,16 @@ public class ApiUserController {
 		}
 	}
 	
+	//Get all posts of following user
+	
 	@GetMapping("/{id}/followings/posts")
 	public ResponseEntity<List<PostDTO>> getPostsOfUsersFollowingUsers(@PathVariable Long id){
 		
 		List<Post> postsOfFollingUsers = postService.byUsersFollowingUsers(id);
 		return new ResponseEntity<>(toPostDto.convert(postsOfFollingUsers), HttpStatus.OK);
 	}
+	
+	//Delete a user
 	
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> delete(@PathVariable Long userId){
@@ -293,6 +316,8 @@ public class ApiUserController {
 		userService.delete(userId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	//Get all followers 
 	
 	
 	@GetMapping("/{id}/followers")
@@ -309,6 +334,8 @@ public class ApiUserController {
 		}
 	}
 	
+	//Get all suggestions for following
+	
 	@GetMapping("/{id}/suggestions")
 	public ResponseEntity<List<UserDTO>> getSuggestions(@PathVariable Long id){
 		Optional<User> user = userService.one(id);
@@ -322,6 +349,8 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	//Log in a user
 	
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginDTO dto) {
@@ -338,6 +367,8 @@ public class ApiUserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	//Register a user
 	
 	@PostMapping("/register")
 	public ResponseEntity<UserDTO> register(
@@ -367,7 +398,7 @@ public class ApiUserController {
 		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
 	}
 	
-	
+	//Modify a user
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> edit(
@@ -384,6 +415,8 @@ public class ApiUserController {
 		UserDTO respBody = toUserDto.convert(persisted);
 		return new ResponseEntity<>(respBody, HttpStatus.OK);
 	}
+	
+	//Change password of a user
 	
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT, params = "chpass")
