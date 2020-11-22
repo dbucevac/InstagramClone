@@ -19,6 +19,8 @@ class Suggestions extends React.Component {
     
   }
 
+  //get logged in user by username
+
   getLoggedInUser(){
     Axios.get('/users/?username='+this.state.loggedInUsername)
         .then(res => {
@@ -27,9 +29,11 @@ class Suggestions extends React.Component {
        
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
+
+  //get suggested members to follow for logged in user
 
     getSuggestions(){
     Axios.get('/users/'+this.state.loggedInUser.id + '/suggestions')
@@ -37,7 +41,7 @@ class Suggestions extends React.Component {
             this.setState({suggestions: res.data})
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
   }
 
@@ -57,7 +61,7 @@ class Suggestions extends React.Component {
       </div>
       <div className="followList">
         {this.state.suggestions.map(sugestion=>(
-           <FollowItem userId={sugestion.id} loggedinUserId={this.state.loggedInUser.id}/>
+           <FollowItem key={sugestion.id} userId={sugestion.id} loggedinUserId={this.state.loggedInUser.id}/>
         ))}
       </div>   
      </div>

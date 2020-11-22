@@ -10,6 +10,8 @@ class Login extends React.Component {
     this.state = { username: "", password: "" };
   }
 
+  //setting the typed in value in the state of the concerned field
+
   valueInputChange(event) {
     let control = event.target;
 
@@ -21,6 +23,7 @@ class Login extends React.Component {
     this.setState(change);
   }
 
+  //method for logging in the user which uses an external method defined in the services package
 
   doLogin(){
     login(this.state);

@@ -16,21 +16,27 @@ class Account extends React.Component{
       
     }
 
+    //get logged in user by username
+
     getLoggedInUser(){
       Axios.get('/users/?username='+this.state.fields.username)
           .then(res => {
               this.setState({fields:res.data[0]})
           })
           .catch(error => {
-              console.log(error)
+              //console.log(error)
           })
   }
+
+  //setting the typed in value in the state of the concerned field 
 
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
+
+//method for handling input validation which sets the state of error message based on the users input
 
     handleValidationAccount(){
         let fields = this.state.fields;
@@ -69,6 +75,8 @@ class Account extends React.Component{
         return formIsValid;
     }
 
+    //method for account modification
+
     modifyAccount(e){
         e.preventDefault();
         if(this.handleValidationAccount()){
@@ -90,6 +98,8 @@ class Account extends React.Component{
          }
          
     }
+
+    //method for account deletion
 
     deleteAccount(e){
 

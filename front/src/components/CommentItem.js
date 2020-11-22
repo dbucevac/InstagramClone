@@ -24,6 +24,8 @@ class CommentItem extends React.Component {
       
   }
 
+  //get user by id
+
   getUser(){
     Axios.get('/users/'+this.state.userId)
         .then(res => {
@@ -33,9 +35,11 @@ class CommentItem extends React.Component {
             
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
     }
+
+    //get users profile picture
 
     getProfilePicture(){
 
@@ -51,10 +55,12 @@ class CommentItem extends React.Component {
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
         });
     }
+
+    //get comment of concerned post
 
     getComment(){
         Axios.get('/users/'+this.state.user.id + '/posts/' + this.state.postId + '/comments/' + this.state.commentId)
@@ -62,7 +68,7 @@ class CommentItem extends React.Component {
                 this.setState({comment: res.data});
             })
             .catch(error => {
-                console.log(error)
+                //console.log(error)
             })
         }
 

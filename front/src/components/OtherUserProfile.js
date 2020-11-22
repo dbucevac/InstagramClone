@@ -35,6 +35,7 @@ class OtherUserProfile extends React.Component {
     }
   }
 
+  //get user by id
 
 getUser(){
     Axios.get('/users/'+this.state.userId)
@@ -47,10 +48,11 @@ getUser(){
             this.getFollowers()
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
 
+  //get users posts
 
 getUsersPosts() {
     Axios.get('/users/' + this.state.userId + '/posts')
@@ -61,10 +63,12 @@ getUsersPosts() {
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 }
+
+//method for getting image of each post and storing its url together with post id
 
 getPostImages(){
 
@@ -81,24 +85,28 @@ getPostImages(){
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 
   })
 }
 
+//get logged in user by username
+
 getLoggedInUser(){
   Axios.get('/users/?username='+this.state.loggedInUsername)
       .then(res => {
           this.setState({loggedInUser: res.data[0]});
-          console.log(res.data)
+          //console.log(res.data)
           this.getStatusOfFollowing()
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get information if the concerned user is followed by logged in user
 
 getStatusOfFollowing(){
   Axios.get('/users/'+this.state.loggedInUser.id + '/followings')
@@ -113,10 +121,11 @@ getStatusOfFollowing(){
           
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
 
+//get profile picture of the user
 
 getProfilePicture(){
 
@@ -132,10 +141,12 @@ getProfilePicture(){
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
 }
+
+//method for following/unfollowing the user and increasing the number of its followers
 
 followUnfollow(){
   Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.userId)
@@ -151,10 +162,12 @@ followUnfollow(){
 
   })
   .catch(error => {
-    console.log(error)
+    //console.log(error)
 })
 
 }
+
+//get the number of users followings
 
 getFollowings(){
   Axios.get('/users/'+this.state.userId + '/followings')
@@ -165,9 +178,11 @@ getFollowings(){
           
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get the number of users followers
 
 getFollowers(){
   Axios.get('/users/'+this.state.userId + '/followers')
@@ -178,9 +193,11 @@ getFollowers(){
           
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//redirecting the user to post image and sending the given component post id props
 
 goToPostImage(postId) {
     this.props.history.push("/posts/" + postId);

@@ -2,6 +2,8 @@ import Axios from '../apis/Axios';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
+//method for signing up the user 
+
 export const signup = async function (username, email, password, passwordConfirm) {
   toast.configure()
   var registrationData = {username, email, password, passwordConfirm}

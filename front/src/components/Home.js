@@ -22,6 +22,8 @@ class Home extends React.Component {
     
   }
 
+  //getting the logged in user by username
+
 getLoggedInUser(){
     Axios.get('/users/?username='+this.state.username)
         .then(res => {
@@ -29,9 +31,11 @@ getLoggedInUser(){
             this.getFollowings()
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
+
+//get logged in users followings 
 
 getFollowings(){
   Axios.get('/users/'+this.state.loggedInUser.id + '/followings')
@@ -40,9 +44,11 @@ getFollowings(){
           this.getFollowingUsersPosts()
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get posts of following users
 
 getFollowingUsersPosts() {
   Axios.get('/users/' + this.state.loggedInUser.id + '/followings/posts')
@@ -53,10 +59,12 @@ getFollowingUsersPosts() {
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
 }
+
+//method for getting following users based on post id and storing them in a separate array in state
 
 getFollowingUsers(){
   this.state.postsOfFollowingUsers.map(post =>{
@@ -68,11 +76,13 @@ getFollowingUsers(){
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
   })
 }
+
+//method for getting picture of each post and storing them together with post id and user
 
 getFollowingUsersPostsWithImage(){
 
@@ -90,7 +100,7 @@ getFollowingUsersPostsWithImage(){
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 

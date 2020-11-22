@@ -12,11 +12,15 @@ class Signup extends React.Component{
         toast.configure()
     }
 
+    //setting the typed in value in the state of the concerned field
+
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
+
+    //method for handling input validation which sets the state of error message based on the users input
 
     handleValidation(){
         let fields = this.state.fields;
@@ -87,7 +91,7 @@ class Signup extends React.Component{
        return formIsValid;
    }
 
-
+    //method for registering the user which uses an external method defined in the services package
 
     doSignup(e){
         e.preventDefault();

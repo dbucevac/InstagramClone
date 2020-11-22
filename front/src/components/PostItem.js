@@ -33,6 +33,8 @@ class PostItem extends React.Component {
     
   }
 
+  //get user by id
+
   getUser(){
     Axios.get('/users/'+this.state.userId)
         .then(res => {
@@ -41,9 +43,11 @@ class PostItem extends React.Component {
             this.getProfilePicture()
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
+
+//get users profile picture
 
 getProfilePicture(){
 
@@ -59,10 +63,12 @@ getProfilePicture(){
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
 }
+
+//get users posts
 
 getPost(){
   Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId)
@@ -73,9 +79,11 @@ getPost(){
           this.getComments()
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get likes linked to the post
 
 getLikeList(){
   Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId + '/likes')
@@ -85,9 +93,11 @@ getLikeList(){
         this.getStatusOfLiking()
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get information if the given post was liked by the logged in user
 
 getStatusOfLiking(){
 
@@ -101,12 +111,13 @@ getStatusOfLiking(){
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 
   })
 }
+//get total number of likes
 
 getNumberOfLikes(){
   Axios.get('/users/'+this.state.userId + '/posts/' + this.state.postId + '/likes')
@@ -116,9 +127,11 @@ getNumberOfLikes(){
           this.setState({numLikes: numLikes});
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//method for liking and unliking the post as logged in user
 
 likeUnlike(){
 
@@ -134,10 +147,12 @@ likeUnlike(){
 
     })
     .catch(error => {
-      console.log(error)
+      //console.log(error)
   })
 
 }
+
+//get comments of a post
 
 getComments() {
   Axios.get('/users/' + +this.state.userId + '/posts/' + this.state.postId + '/comments')
@@ -148,10 +163,12 @@ getComments() {
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
 }
+
+//method for getting user based on his comment and storing them together in the state
 
 getCommentsWithUsers(){
   this.state.comments.map(comment =>{
@@ -162,11 +179,13 @@ getCommentsWithUsers(){
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
   })
 }
+
+//method for toggling the state of comment section
 
 displayCommentSection(){
   if(this.state.commentsWithUsers.length>0){
@@ -174,6 +193,8 @@ displayCommentSection(){
   }
   
 }
+
+//setting the typed in value in the state of the concerned field
 
 valueInputChange(event) {
   let control = event.target;
@@ -186,6 +207,8 @@ valueInputChange(event) {
   this.setState(change);
 }
 
+//method for publishing a comment on a post as logged in user
+
 sendComment(e){
   e.preventDefault();
   var txt = this.state.comment;
@@ -196,7 +219,7 @@ sendComment(e){
     this.setState({comment: ''})
   })
   .catch(error=>{
-    console.log(error)
+    //console.log(error)
   })
 }
 
@@ -223,8 +246,8 @@ sendComment(e){
             <h6 className="postCaption">{this.state.post.caption}</h6>
             <h6 style={{"marginLeft": ".5rem", "color": "grey", "cursor":"pointer"}} onClick={()=>{this.displayCommentSection()}}>{commentLabelDisplayed}</h6>
             
-            <div class="row" style={{"marginTop":"1rem"}}>
-              <form class="col s12" style={{"display":"flex"}} onSubmit={(e)=>{this.sendComment(e)}}>
+            <div className="row" style={{"marginTop":"1rem"}}>
+              <form className="col s12" style={{"display":"flex"}} onSubmit={(e)=>{this.sendComment(e)}}>
                   <textarea className="browser-default" style={{"width":"100%", "border": "1px solid lightGrey", "padding": ".5rem .5rem"}} 
                   name="comment" placeholder="Write a comment" 
                   onChange={(e) => {this.valueInputChange(e);}} value={this.state.comment}></textarea>
@@ -234,7 +257,7 @@ sendComment(e){
 
             <ul style={{"display":commentSectionDisplayed}} >
             {this.state.commentsWithUsers.map(item => (
-                  <li><CommentItem key={item.commentId} userId={item.userId} commentId={item.commentId} loggedinUserId={this.state.loggedInUserId} postId={this.state.post.id}
+                  <li key={item.commentId}><CommentItem userId={item.userId} commentId={item.commentId} loggedinUserId={this.state.loggedInUserId} postId={this.state.post.id}
                   /></li>
               ))}
             </ul>

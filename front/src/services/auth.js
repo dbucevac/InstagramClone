@@ -2,7 +2,7 @@ import Axios from '../apis/Axios';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
-
+//method for signing in the user 
 
 export const login = async function (credentials) {
   toast.configure()
@@ -10,7 +10,7 @@ export const login = async function (credentials) {
     let response = await Axios.post("/users/login", credentials);
     let token = response.data;
 
-    console.log(token);
+    //console.log(token);
 
     window.localStorage.setItem("token", token);
     window.localStorage.setItem("username", credentials.username)
@@ -21,6 +21,8 @@ export const login = async function (credentials) {
     toast.error("Account with the given credentials doesn't exist. Please try again", {position: toast.POSITION.TOP_CENTER})
   }
 };
+
+//method for logging out the user 
 
 export const logout = function(){
     window.localStorage.removeItem("token");

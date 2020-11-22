@@ -21,6 +21,8 @@ class FollowItem extends React.Component {
       
   }
 
+  //get user by id
+
   getUser(){
     Axios.get('/users/'+this.state.userId)
         .then(res => {
@@ -28,9 +30,11 @@ class FollowItem extends React.Component {
             this.getProfilePicture()
         })
         .catch(error => {
-            console.log(error)
+           // console.log(error)
         })
     }
+
+    //get users profile picture
 
     getProfilePicture(){
 
@@ -46,7 +50,7 @@ class FollowItem extends React.Component {
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
         });
     }

@@ -26,6 +26,7 @@ class Profile extends React.Component {
     
   }
 
+//get logged in user by username
 
 getLoggedInUser(){
     Axios.get('/users/?username='+this.state.username)
@@ -38,10 +39,11 @@ getLoggedInUser(){
             
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
 
+//get logged in users posts
 
 getLoggedInUsersPosts() {
     Axios.get('/users/' + this.state.loggedInUser.id + '/posts')
@@ -52,10 +54,12 @@ getLoggedInUsersPosts() {
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 }
+
+//method for getting image of each post and storing its url together with post id
 
 getPostImages(){
 
@@ -72,12 +76,14 @@ getPostImages(){
         })
         .catch(error => {
 
-            console.log(error);
+            //console.log(error);
             //alert('Error occured please try again!');
          });
 
   })
 }
+
+//get profile picture of the logged in user
 
 getProfilePicture(){
 
@@ -93,10 +99,12 @@ getProfilePicture(){
       })
       .catch(error => {
 
-          console.log(error);
+          //console.log(error);
           //alert('Error occured please try again!');
        });
 }
+
+//get the number of logged in users followings
 
 getFollowings(){
   Axios.get('/users/'+this.state.loggedInUser.id + '/followings')
@@ -107,9 +115,11 @@ getFollowings(){
           
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//get the number of logged in users followers
 
 getFollowers(){
   Axios.get('/users/'+this.state.loggedInUser.id + '/followers')
@@ -120,9 +130,11 @@ getFollowers(){
           
       })
       .catch(error => {
-          console.log(error)
+          //console.log(error)
       })
 }
+
+//redirecting the user to post image and sending the given component post id props
 
 
 goToPostImage(postId) {

@@ -41,6 +41,8 @@ class App extends React.Component {
     
   }
 
+  //Get all users
+
   getUsers(){
     Axios.get('/users')
         .then(res => {
@@ -53,9 +55,11 @@ class App extends React.Component {
           })   
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
   }
+
+   //Method for updating the search field with typed in value
 
   updateSearch(event){
     this.setState({search:event.target.value})

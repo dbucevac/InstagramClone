@@ -1,6 +1,5 @@
 import React from 'react';
 import Axios from '../apis/Axios';
-import {Link} from "react-router-dom";
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 class PasswordChange extends React.Component{
@@ -16,15 +15,18 @@ class PasswordChange extends React.Component{
       
     }
 
+    //get logged in user by username
+
     getLoggedInUser(){
       Axios.get('/users/?username='+this.state.loggedInUsername)
           .then(res => {
               this.setState({loggedInUser:res.data[0]})
           })
           .catch(error => {
-              console.log(error)
+              //console.log(error)
           })
   }
+  //setting the typed in value in the state of the concerned field
 
     handleChange(field, e){         
         let fields = this.state.fields;
@@ -32,6 +34,7 @@ class PasswordChange extends React.Component{
         this.setState({fields});
     }
 
+    //method for handling input validation which sets the state of error message based on the users input
 
     handleValidationPasswordChange(){
       let fields = this.state.fields;
@@ -74,7 +77,7 @@ class PasswordChange extends React.Component{
        return formIsValid;
    }
 
-
+//method for changing the password of the user
 
     changePassword(e){
         e.preventDefault();

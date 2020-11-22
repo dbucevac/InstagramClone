@@ -1,5 +1,7 @@
 import React from 'react';
 
+//functional component which informs the user that requested page isn't found
+
 const NotFound = () => {
     return(
         <div class="valign-wrapper" style={{"width":"100%", "height":"50%", "position": "absolute"}}>

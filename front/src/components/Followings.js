@@ -21,6 +21,8 @@ class Followings extends React.Component {
     
   }
 
+  //get logged in user by username
+
   getLoggedInUser(){
     Axios.get('/users/?username='+this.state.loggedInUsername)
         .then(res => {
@@ -28,9 +30,11 @@ class Followings extends React.Component {
        
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
 }
+
+  //get users followings
 
   getFollowings(){
     Axios.get('/users/'+this.state.userId + '/followings')
@@ -38,7 +42,7 @@ class Followings extends React.Component {
             this.setState({followings: res.data})
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
         })
   }
 
@@ -56,14 +60,12 @@ class Followings extends React.Component {
       </div>
       <div className="followList">
         {this.state.followings.map(following=>(
-           <FollowItem userId={following.id} loggedinUserId={this.state.loggedInUser.id}/>
+           <FollowItem key={following.id} userId={following.id} loggedinUserId={this.state.loggedInUser.id}/>
         ))}
       </div>   
      </div>
     
     ) 
-  
-  
     
   }
 }

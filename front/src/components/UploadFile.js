@@ -23,12 +23,15 @@ class UploadFile extends React.Component {
         
     }
 
+    //setting the selected file value in the state of the concerned field
+
     onFileChange = event => { 
         
         this.setState({ selectedFile: event.target.files[0] }); 
         
     }; 
 
+    //setting the typed in value in the state of the concerned field
 
     valueInputChange(event) {
         let control = event.target;
@@ -41,15 +44,19 @@ class UploadFile extends React.Component {
         this.setState(change);
     }
 
+    //get logged in user by username
+
     getLoggedInUser(){
         Axios.get('/users/?username='+this.state.username)
             .then(res => {
                 this.setState({loggedInUser: res.data[0]});
             })
             .catch(error => {
-                console.log(error)
+                //console.log(error)
         })
     }
+
+    //method for handling file validation which sets the state of error message based on the uploaded file
 
     handleValidation(){
         let file = this.state.selectedFile;
@@ -78,6 +85,8 @@ class UploadFile extends React.Component {
         return formIsValid;
         
     }
+
+    //post upload
 
     onFileUpload = (e) => { 
         e.preventDefault()
