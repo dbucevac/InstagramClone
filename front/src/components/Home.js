@@ -119,7 +119,7 @@ getFollowingUsersPostsWithImage(){
         <div className="row">
           <div className="col s2"></div>
           <div className="col s8">  
-            <h4 className="center">Start following InstaClone members today so you never miss out!</h4>
+            <h4 className="center">Start following InstaClone members so you never miss out!</h4>
           </div>
           <div className="col s2"></div>
         </div>
