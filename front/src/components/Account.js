@@ -69,49 +69,6 @@ class Account extends React.Component{
         return formIsValid;
     }
 
-    handleValidationPasswordChange(){
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true; 
-
-       //Password & Password Confirm
-
-       if(!fields["password"]){
-        formIsValid = false;
-        errors["password"] = "Password cannot be empty";
-        }
-
-       if(typeof fields["password"] !== "undefined"){
-            if(!fields["password"].match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)){
-                formIsValid = false;
-                errors["password"] = "Password is not valid";
-            }   
-        }
-
-        if(!fields["passwordConfirm"]){
-            formIsValid = false;
-            errors["passwordConfirm"] = "Password confirmation cannot be empty";
-        }
-    
-        if(typeof fields["passwordConfirm"] !== "undefined"){
-            if(!fields["passwordConfirm"].match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)){
-                formIsValid = false;
-                errors["passwordConfirm"] = "Password confirmation is not valid";
-            }   
-        }
-
-        if(fields["password"]!==fields["passwordConfirm"]){
-            formIsValid = false;
-            errors["match"] = "Password and password confirmation don't match";
-        }
-
-
-       this.setState({errors: errors});
-       return formIsValid;
-   }
-
-
-
     modifyAccount(e){
         e.preventDefault();
         if(this.handleValidationAccount()){
@@ -129,9 +86,7 @@ class Account extends React.Component{
                     this.props.history.push("/profile");
                 },2000)
             }
-
-            
-            
+          
          }
          
     }
@@ -186,7 +141,7 @@ class Account extends React.Component{
                         onClick={(e) => {this.modifyAccount(e)}} style={{"width":"100%", "marginTop": "2rem"}}>Save</button>
                     </form>
                         <div className="span-login">
-                            <span>Need to change your password? Click <Link to="/password-change" className="login-link"> here</Link></span>
+                            <span>Need to change your password? Click <Link to="/password-change" className="password-link"> here</Link></span>
                             <button className="btn-small red darken-2 sbmtBtn" 
                         onClick={(e) => {this.deleteAccount(e)}} style={{"width":"80%", "marginTop": "2rem"}}>Delete account</button>
                         </div>

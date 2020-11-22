@@ -72,10 +72,6 @@ public class JpaUserService implements UserService{
 		
 		User user = result.get();
 		
-		if(!user.getEmail().equals(changeDto.getEmail())){
-			return false;
-		}
-
 
 		String encodedPass = passwordEncoder.encode(changeDto.getPassword());
 		user.setPassword(encodedPass);

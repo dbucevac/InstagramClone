@@ -10,6 +10,7 @@ import UploadProfilePicture from './components/UploadProfilePicture';
 import Profile from './components/Profile';
 import OtherUserProfile from './components/OtherUserProfile'
 import Account from './components/Account';
+import PasswordChage from './components/PasswordChange';
 import Post from './components/Post';
 import Followers from './components/Followers';
 import Followings from './components/Followings';
@@ -117,6 +118,9 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/account" render={(props) => (
                   <Account {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/password-change" render={(props) => (
+                  <PasswordChage {...props} username={username} />)}>
                 </Route>
                 <Route exact path="/posts/:id" render={(props) => (
                   <Post {...props} username={username} />)}>
