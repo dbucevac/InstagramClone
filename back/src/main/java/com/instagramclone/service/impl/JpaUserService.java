@@ -1,5 +1,6 @@
 package com.instagramclone.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,6 +121,38 @@ public class JpaUserService implements UserService{
 	public Optional<User> byComment(Long commentId) {
 		// TODO Auto-generated method stub
 		return userRepository.findByCommentsId(commentId);
+	}
+
+	@Override
+	public List<User> suggestUsers(Long id) {
+		// TODO Auto-generated method stub
+		Optional<User> user = userRepository.findById(id);
+		
+		if(!user.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+		
+		User result = user.get();
+		
+		List<User> suggestions = new ArrayList<>();
+		List<User> allUsers = userRepository.findAll();
+		List<User> followings = userRepository.findByFollowedUsersId(id);
+		
+		if(!allUsers.isEmpty() && !followings.isEmpty()) {
+			
+			for(User u : followings) {
+				List<User> followingUsersFollowings = u.getFollowingUsers();
+				for(User f: followingUsersFollowings) {
+					if(!followings.contains(f) && !f.getId().equals(result.getId())) {
+						suggestions.add(f);
+					}
+				}
+				
+			}
+		}
+		
+		return suggestions;
+		
 	}
 
 	

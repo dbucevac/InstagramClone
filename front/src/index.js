@@ -11,8 +11,9 @@ import Profile from './components/Profile';
 import OtherUserProfile from './components/OtherUserProfile'
 import Account from './components/Account';
 import Post from './components/Post';
-import Followers from './components/Followers'
-import Followings from './components/Followings'
+import Followers from './components/Followers';
+import Followings from './components/Followings';
+import Suggestions from './components/Suggestions';
 import {
   Route,
   Link,
@@ -92,6 +93,7 @@ class App extends React.Component {
                   </li>
                   <li><Link to="/uploadpicture"><i className="small material-icons logo-icon" title="Post a photo">add_box</i></Link></li>
                   <li><Link to="/"><i className="small material-icons logo-icon" title="Home">home</i></Link></li>
+                  <li><Link to="/suggestions"><i className="small material-icons logo-icon" title="Suggestions">group_add</i></Link></li>
                   <li><Link to="/profile" className="btn-floating pink accent-1 white-text profile-icon" title={username + " profile"}>{username.charAt(0).toUpperCase()}</Link></li>
                   <li><Link to="" onClick={() => {
                   logout();
@@ -127,6 +129,9 @@ class App extends React.Component {
                 </Route>
                 <Route exact path="/users/:id/following" render={(props) => (
                   <Followings {...props} username={username} />)}>
+                </Route>
+                <Route exact path="/suggestions" render={(props) => (
+                  <Suggestions {...props} username={username} />)}>
                 </Route>
               <Route exact path="/login">
                   <Redirect to="/"></Redirect>

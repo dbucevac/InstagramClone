@@ -22,6 +22,6 @@ public interface UserService {
 	List<User> searchUsers(@Param("username") String username);
 	List<User> findFollowingUsersByUserId(@Param("userId") Long userId);
 	List<User> findFollowersByUserId(@Param("userId") Long userId);
-	
+	List<User> suggestUsers(Long id);
 	
 }

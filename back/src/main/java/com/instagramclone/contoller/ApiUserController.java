@@ -309,6 +309,20 @@ public class ApiUserController {
 		}
 	}
 	
+	@GetMapping("/{id}/suggestions")
+	public ResponseEntity<List<UserDTO>> getSuggestions(@PathVariable Long id){
+		Optional<User> user = userService.one(id);
+		
+		if(user.isPresent()) {
+			List<User> suggestions = userService.suggestUsers(id);
+			List<UserDTO> body = toUserDto.convert(suggestions);
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginDTO dto) {
 		// Perform the authentication
