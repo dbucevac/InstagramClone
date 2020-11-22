@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Axios from './apis/Axios';
 import Home from "./components/Home";
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup'
@@ -24,23 +25,70 @@ import './index.css';
 
 class App extends React.Component {
 
+  constructor(props){
+    super(props);
+    this.state={
+      users:[],
+      search:'',
+      searchResultDisplayed: false
+    }
+  }
+
+  componentDidMount(){
+    this.getUsers()
+    
+  }
+
+  getUsers(){
+    Axios.get('/users')
+        .then(res => {
+          let loggedinUser = window.localStorage.getItem("username")
+          var users = res.data;
+          users.map(user=>{
+            if(loggedinUser !== user.username){
+              this.setState({users:this.state.users.concat(user)})
+            }
+          })   
+        })
+        .catch(error => {
+            console.log(error)
+        })
+  }
+
+  updateSearch(event){
+    this.setState({search:event.target.value})
+    this.setState({searchResultDisplayed: true})
+  }
+
   render() {
     let token = window.localStorage.getItem("token");
     let username = window.localStorage.getItem("username")
+    let filteredUsers = this.state.users.filter(
+      (user)=>{
+        return user.username.toLowerCase().indexOf(this.state.search.toLowerCase())!=-1;
+      }
+    );
+    let searchResult = this.state.searchResultDisplayed?"block":"none";
     if (token) {
       return (
-        <div>
-        {console.log(token + ' ' + username)}
+        <div onClick={()=>{this.setState({searchResultDisplayed:false})}}>
           <Router>
           <div className="navbar-fixed">
             <nav>
               <div className="nav-wrapper white">
               <Link to="/" className="brand-logo"><i className="small material-icons logo-icon">camera_alt</i>InstaClone</Link>  
               <ul id="nav-mobile" className="right">
-                  <li >
+                  <li style={{"position":"relative", "display":"inline-block"}}>
                     <form style={{"marginRight":"2rem"}}>
-                        <input id="search" type="search" placeholder="Search"></input>
+                        <input id="search" type="search" placeholder="Search" style={{"width":"15rem"}} autoComplete="off"
+                        value={this.state.search} onChange={(e)=>{this.updateSearch(e)}}></input>
+                        <div className="dropdown-content" style={{"display":searchResult}} >
+                        {filteredUsers.map(user => (
+                            <Link to={"/users/"+user.id} key={user.id} onClick={()=>{this.setState({search:''})}}>{user.username}</Link>
+                        ))}                        
+                        </div>
                     </form>
+                    
                   </li>
                   <li><Link to="/uploadpicture"><i className="small material-icons logo-icon" title="Post a photo">add_box</i></Link></li>
                   <li><Link to="/"><i className="small material-icons logo-icon" title="Home">home</i></Link></li>

@@ -29,6 +29,12 @@ class OtherUserProfile extends React.Component {
     
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      window.location.reload()
+    }
+  }
+
 
 getUser(){
     Axios.get('/users/'+this.state.userId)
@@ -47,7 +53,7 @@ getUser(){
 
 
 getUsersPosts() {
-    Axios.get('/users/' + this.state.user.id + '/posts')
+    Axios.get('/users/' + this.state.userId + '/posts')
         .then(res => {
 
             this.setState({posts: res.data});
@@ -63,7 +69,7 @@ getUsersPosts() {
 getPostImages(){
 
   this.state.posts.map(post =>{
-    Axios.get('/users/' + this.state.user.id + '/posts/' + post.id + '/picture', {
+    Axios.get('/users/' + this.state.userId + '/posts/' + post.id + '/picture', {
     method: 'GET',
     responseType: 'blob' }).then(res => {
 
@@ -114,7 +120,7 @@ getStatusOfFollowing(){
 
 getProfilePicture(){
 
-  Axios.get('/users/' + this.state.user.id + '/picture', {
+  Axios.get('/users/' + this.state.userId+ '/picture', {
   method: 'GET',
   responseType: 'blob' }).then(res => {
 
@@ -132,7 +138,7 @@ getProfilePicture(){
 }
 
 followUnfollow(){
-  Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.user.id)
+  Axios.post('/users/' + this.state.loggedInUser.id + '/follow/' + this.state.userId)
   .then(res =>{
 
     this.setState({followedByLoggedInUser: !this.state.followedByLoggedInUser})
@@ -151,7 +157,7 @@ followUnfollow(){
 }
 
 getFollowings(){
-  Axios.get('/users/'+this.state.user.id + '/followings')
+  Axios.get('/users/'+this.state.userId + '/followings')
       .then(res => {
           var data = res.data;
           var numFollowings = data.length
@@ -164,7 +170,7 @@ getFollowings(){
 }
 
 getFollowers(){
-  Axios.get('/users/'+this.state.user.id + '/followers')
+  Axios.get('/users/'+this.state.userId + '/followers')
       .then(res => {
           var data = res.data;
           var numFollowers = data.length
@@ -184,7 +190,7 @@ goToPostImage(postId) {
     let profilePicture = this.state.profileImageUrl===null?noImage:this.state.profileImageUrl;
     let followStatus = this.state.followedByLoggedInUser?<button className="waves-effect btn-small grey darken-1" style={{"marginLeft": "2rem"}} onClick={() => {this.followUnfollow()}}>Unfollow</button>:
     <button className="waves-effect btn-small blue darken-1" style={{"marginLeft": "2rem"}} onClick={() => {this.followUnfollow()}}>Follow</button>
-    if(this.state.user.username !==this.state.loggedInUsername && this.state.user.id !== undefined){
+    if(this.state.user.username !==this.state.loggedInUsername && this.state.userId !== undefined){
       return( 
         <div>  
           <div className="container">
